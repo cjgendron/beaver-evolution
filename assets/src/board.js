@@ -78,7 +78,6 @@ function Piece(type, game, hexCoordinate, height, width) {
 	this.width = width;
 	this.hexCoordinate = hexCoordinate;
 	this.dam = false;
-
 	this.button = game.add.button(hexCoordinate.pixelCenter['x'] - this.width/2, hexCoordinate.pixelCenter['y'] - this.height/2, "green", actionOnclick, this);
 
 	function actionOnclick(clickedButton) {
