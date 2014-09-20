@@ -6,6 +6,7 @@
         <script src="assets/js/phaser.min.js"></script>
         <script src="assets/src/board.js"></script>
         <script src="assets/src/disaster.js"></script>
+        <script src="assets/src/taskbar.js"></script>
     </head>
     <body>
         Welcome to Beaver Evolution!
@@ -21,19 +22,33 @@
         function preload () {
 
             game.load.image("test_image", "assets/images/phaser.png");
+            game.load.spritesheet('build', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+            game.load.image("green", "assets/images/green.png");
+            game.load.image("green_brown", "assets/images/green_brown.png");
 
         }
 
         function create () {
 
 
+            var board = new Board(game);
+
+            game.getBoard = function() {
+                return board;
+            }
+
             // TODO: implement some callback to handle board clicks (mainly for adding dams;)
             game.boardCallbackHandler = function (obj) {
                 console.log(obj);
             };
 
+<<<<<<< HEAD
             // var board = new Board(game);
             var disasterScreen = new disaster_screen(game);
+=======
+            var board = new Board(game);
+            var taskbar = new Taskbar(game);
+>>>>>>> 4be0aa318fbbb74520ac5a6459982f3b75e513d9
 
             
 

@@ -2,7 +2,7 @@ function Board(game) {
 
 	this.game = game;
 	this.pieces = {};
-	var dams = [];
+	this.dams = [];
 	this.numPiecesVert = 9;
 	this.pieceHeight = this.game.height/(1 + .75 * (this.numPiecesVert - 1));
 	this.pieceWidth = Math.sqrt(3)/2.0 * this.pieceHeight;
@@ -15,7 +15,7 @@ function Board(game) {
 		var rowStart = 0;
 		for (var y = 0; y < board.numPiecesVert; y++){
 			for(var x = rowStart; x < rowStart + board.numPiecesHor; x++){
-				board.pieces[[x,y]] = new Piece ("type", board.game, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight));
+				board.pieces[[x,y]] = new Piece ("type", board.game, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight), board.pieceHeight, board.pieceWidth);
 			}
 			if (y % 2 == 1) {
 				rowStart -= 1;
@@ -28,12 +28,14 @@ Board.prototype = {
 
 	placeDam : function(piece){
 		piece.dam = true;
-		this.dams.push(piece);
+		if(this.dams.indexOf(piece) == -1) {
+			this.dams.push(piece);
+		}
 	},
 
 	removeDam : function(piece){
 		piece.dam = false;
-		this.dams.remove(piece);
+		this.dams.splice(this.dams.indexOf(piece), 1);
 	},
 
 	drawBoard : function(game) {
@@ -69,19 +71,23 @@ Board.prototype = {
 	}
 };
 
-function Piece(type, game, hexCoordinate) {
+function Piece(type, game, hexCoordinate, height, width) {
 	this.type = type;
 	this.game = game;
-
-	this.button = game.add.button(hexCoordinate.pixelCenter['x'],hexCoordinate.pixelCenter['y'], "test_image", actionOnclick, this);// x, y, spriteSheet, callback, callbackContext, overFrame, outFrame, downFrame
-
-	function actionOnclick(obj) // obj is the button object which was passed to this function. We can manipulate it now.
-	{
-	   this.game.boardCallbackHandler(obj);
-	}
-
+	this.height = height;
+	this.width = width;
 	this.hexCoordinate = hexCoordinate;
 	this.dam = false;
+
+	this.button = game.add.button(hexCoordinate.pixelCenter['x'] - this.width/2, hexCoordinate.pixelCenter['y'] - this.height/2, "green", actionOnclick, this);
+
+	function actionOnclick(clickedButton) {
+	   this.dam = true;
+	   game.getBoard().placeDam(this);
+	   this.button.destroy();
+	   this.button = game.add.button(hexCoordinate.pixelCenter['x'] - this.width/2, hexCoordinate.pixelCenter['y'] - this.height/2, "green_brown", actionOnclick, this);
+	}
+
 };
 
 Piece.prototype = {
@@ -132,6 +138,7 @@ function HexCoordinate(xHex, yHex, pieceWidth, pieceHeight) {
 		var centerY = (0.5 + 0.75  * hexCoordinate.yHex) * pieceHeight;
 		return {'x' : centerX, 'y' : centerY};
 	}
+
 };
 
 HexCoordinate.prototype = {
