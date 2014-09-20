@@ -17,7 +17,7 @@
     window.onload = function() {
 
         var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create });
-        game.state.add('disasterScreen', disaster_screen);
+        // game.state.add('disasterScreen', Disaster);
 
         function preload () {
 
@@ -35,7 +35,7 @@
         function create () {
 
 
-            var board = new Board(game);
+            // var board = new Board(game);
 
             game.getBoard = function() {
                 return board;
@@ -46,23 +46,11 @@
                 console.log(obj);
             };
 
-            // var board = new Board(game);
-            var disasterScreen = new disaster_screen(game);
-            var board = new Board(game);
-            var taskbar = new Taskbar(game);
+            var disasterScreen = new Disaster(game);
+            // var taskbar = new Taskbar(game);
             
 
             //game.input.onDown.add(board.handleMouseClick, this);
-
-
-
-            var button = game.add.button(0, 0, 'button', disasterAction, this);
-
-        }
-
-        function disasterAction() {
-            game.state.start('disasterScreen');   
-            console.log("woot");        
         }
 
     };
