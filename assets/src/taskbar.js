@@ -16,6 +16,9 @@ function Taskbar(game) {
 }
 
 Taskbar.prototype = {
+	preload: function() {
+
+	},
 	create: function() {
 		buildButton = this.game.add.button(300, 500, 'build', actionOnBuild, this);
 		populateButton = this.game.add.button(400, 500, 'populate', actionOnPopulate, this);
