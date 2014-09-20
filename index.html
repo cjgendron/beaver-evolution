@@ -22,11 +22,19 @@
 
             game.load.image("test_image", "assets/images/phaser.png");
             game.load.spritesheet('build', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+            game.load.image("green", "assets/images/green.png");
+            game.load.image("green_brown", "assets/images/green_brown.png");
 
         }
 
         function create () {
 
+
+            var board = new Board(game);
+
+            game.getBoard = function() {
+                return board;
+            }
 
             // TODO: implement some callback to handle board clicks (mainly for adding dams;)
             game.boardCallbackHandler = function (obj) {
