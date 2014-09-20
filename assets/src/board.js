@@ -15,7 +15,7 @@ function Board(game) {
 		var rowStart = 0;
 		for (var y = 0; y < board.numPiecesVert; y++){
 			for(var x = rowStart; x < rowStart + board.numPiecesHor; x++){
-				board.pieces[[x,y]] = new Piece ("type", new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight));
+				board.pieces[[x,y]] = new Piece ("type", board.game, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight));
 			}
 			if (y % 2 == 1) {
 				rowStart -= 1;
@@ -69,9 +69,17 @@ Board.prototype = {
 	}
 };
 
-function Piece(type, hexCoordinate) {
-	var type = type;
-	var image;
+function Piece(type, game, hexCoordinate) {
+	this.type = type;
+	this.game = game;
+
+	this.button = game.add.button(hexCoordinate.pixelCenter['x'],hexCoordinate.pixelCenter['y'], "test_image", actionOnclick, this);// x, y, spriteSheet, callback, callbackContext, overFrame, outFrame, downFrame
+
+	function actionOnclick(obj) // obj is the button object which was passed to this function. We can manipulate it now.
+	{
+	   this.game.boardCallbackHandler(obj);
+	}
+
 	this.hexCoordinate = hexCoordinate;
 	this.dam = false;
 };
@@ -83,18 +91,20 @@ Piece.prototype = {
         shape.lineStyle(2, 0x0000FF, 1); // width, color (0x0000FF), alpha (0 -> 1) // required settings
         shape.beginFill(0xFFFFFF, 1) // color (0xFFFF0B), alpha (0 -> 1) // required settings
 		var horizontalOffset = (board.game.width - (board.pieceWidth * (board.numPiecesHor + 0.5))) / 2.0;
-		for (var i = 0; i < 6; i++){
-		    var angle = 2 * Math.PI / 6 * (i + 0.5);
-		    var size = this.hexCoordinate.height / 2.0;
-		    var x_i = this.hexCoordinate.pixelCenter['x'] + size * Math.cos(angle) + horizontalOffset;
-		    var y_i = this.hexCoordinate.pixelCenter['y'] + size * Math.sin(angle);
-		    if (i == 0){
-		        shape.moveTo(x_i, y_i);
-		    }
-		    else {
-		        shape.lineTo(x_i, y_i);
-		    }
-		}
+
+
+		// for (var i = 0; i < 6; i++){
+		//     var angle = 2 * Math.PI / 6 * (i + 0.5);
+		//     var size = this.hexCoordinate.height / 2.0;
+		//     var x_i = this.hexCoordinate.pixelCenter['x'] + size * Math.cos(angle) + horizontalOffset;
+		//     var y_i = this.hexCoordinate.pixelCenter['y'] + size * Math.sin(angle);
+		//     if (i == 0){
+		//         shape.moveTo(x_i, y_i);
+		//     }
+		//     else {
+		//         shape.lineTo(x_i, y_i);
+		//     }
+		// }
 	},
 
 	getCoordinate : function() {
