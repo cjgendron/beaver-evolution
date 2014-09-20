@@ -2,7 +2,7 @@ function Board(game) {
 
 	this.game = game;
 	this.pieces = {};
-	var dams = [];
+	this.dams = [];
 	this.numPiecesVert = 9;
 	this.pieceHeight = this.game.height/(1 + .75 * (this.numPiecesVert - 1));
 	this.pieceWidth = Math.sqrt(3)/2.0 * this.pieceHeight;
@@ -33,7 +33,7 @@ Board.prototype = {
 
 	removeDam : function(piece){
 		piece.dam = false;
-		this.dams.remove(piece);
+		//this.dams.remove(piece); works??
 	},
 
 	drawBoard : function(game) {
@@ -70,11 +70,11 @@ Board.prototype = {
 };
 
 function Piece(type, game, hexCoordinate) {
-	this.type = type;
+	this.type = type; //enum?
 	this.game = game;
 
-	this.button = game.add.button(hexCoordinate.pixelCenter['x'],hexCoordinate.pixelCenter['y'], "test_image", actionOnclick, this);// x, y, spriteSheet, callback, callbackContext, overFrame, outFrame, downFrame
-
+	this.button = game.add.button(hexCoordinate.pixelCenter['x'],hexCoordinate.pixelCenter['y'], "basic_hex_sprite_water", actionOnclick, this);// x, y, spriteSheet, callback, callbackContext, overFrame, outFrame, downFrame
+	this.button.scale.x = 3;
 	function actionOnclick(obj) // obj is the button object which was passed to this function. We can manipulate it now.
 	{
 	   this.game.boardCallbackHandler(obj);
