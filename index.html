@@ -5,6 +5,7 @@
         <title>hello phaser!</title>
         <script src="assets/js/phaser.min.js"></script>
         <script src="assets/src/board.js"></script>
+        <script src="assets/src/disaster.js"></script>
     </head>
     <body>
         Welcome to Beaver Evolution!
@@ -15,6 +16,7 @@
     window.onload = function() {
 
         var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create });
+        game.state.add('disasterScreen', disaster_screen);
 
         function preload () {
 
@@ -25,12 +27,24 @@
             var board = new Board(game);
             game.input.onDown.add(board.handleMouseClick, this);
 
+            var button = game.add.button(0, 0, 'button', disasterAction, this);
 
+        }
+
+        function disasterAction() {
+            game.state.start('disasterScreen');   
+            console.log("woot");        
         }
 
     };
 
     </script>
+
+    <!-- <button id="disaster_button"> Disasters </button> -->
+<!--     <div id="disaster_screen" style="display: none;">
+        <h1> Disasters! </h1>
+        <ul id="disaster_list"> </ul>
+    <div> -->
 
     </body>
 </html>

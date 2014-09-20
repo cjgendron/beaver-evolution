@@ -138,4 +138,4 @@ HexCoordinate.prototype = {
 
 	}
 
-	};
+};
