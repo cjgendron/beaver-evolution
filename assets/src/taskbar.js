@@ -1,12 +1,5 @@
 function Taskbar(game) {
 	this.game = game;
-	createTaskbar(this);
-
-	function createTaskbar(taskbar){
-		buildButton = game.add.button(300, 500, 'build', actionOnBuild, this);
-		populateButton = game.add.button(400, 500, 'populate', actionOnPopulate, this);
-		evolveButton = game.add.button(500, 500, 'evolve', actionOnEvolve, this);
-	}
 
 	function actionOnBuild(){
 		// damCount = board.getDamCount;
@@ -19,5 +12,16 @@ function Taskbar(game) {
 
 	function actionOnEvolve(){
 		// this.game.switchState(gameObject.evolutionCard)
+	}
+}
+
+Taskbar.prototype = {
+	preload: function() {
+
+	},
+	create: function() {
+		buildButton = this.game.add.button(300, 500, 'build', actionOnBuild, this);
+		populateButton = this.game.add.button(400, 500, 'populate', actionOnPopulate, this);
+		evolveButton = this.game.add.button(500, 500, 'evolve', actionOnEvolve, this);
 	}
 }

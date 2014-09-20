@@ -1,5 +1,4 @@
 function Board(game) {
-
 	this.game = game;
 	this.pieces = {};
 	this.dams = [];
@@ -8,24 +7,33 @@ function Board(game) {
 	this.pieceWidth = Math.sqrt(3)/2.0 * this.pieceHeight;
 	this.numPiecesHor = Math.floor((this.game.width/this.pieceWidth) - 0.5);
 	console.log(this.pieceWidth);
-	createBoard(this);
-	this.drawBoard(this.game);
-
-	function createBoard(board) {
-		var rowStart = 0;
-		for (var y = 0; y < board.numPiecesVert; y++){
-			for(var x = rowStart; x < rowStart + board.numPiecesHor; x++){
-				board.pieces[[x,y]] = new Piece ("type", board.game, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight), board.pieceHeight, board.pieceWidth);
-			}
-			if (y % 2 == 1) {
-				rowStart -= 1;
-			}
-		}
-	};
 };
 
 Board.prototype = {
 
+	preload: function() {
+        this.game.load.image("test_image", "../assets/images/phaser.png");
+        this.game.load.image("green", "../assets/images/green.png");
+        this.game.load.image("green_brown", "../assets/images/green_brown.png");
+        this.game.load.image("basic_hex_sprite_land", "/assets/images/basic_hex_sprite_land.png", 42, 48);
+        this.game.load.image("basic_hex_sprite_water", "/assets/images/basic_hex_sprite_water.png", 42, 48);
+        this.game.load.image("basic_hex_sprite_dam", "/assets/images/basic_hex_sprite_dam.png", 42, 48);
+    },
+    create: function() {
+    	createBoard(this);
+    	this.drawBoard(this.game);
+        function createBoard(board) {
+			var rowStart = 0;
+			for (var y = 0; y < board.numPiecesVert; y++){
+				for(var x = rowStart; x < rowStart + board.numPiecesHor; x++){
+					board.pieces[[x,y]] = new Piece ("type", board.game, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight), board.pieceHeight, board.pieceWidth);
+				}
+				if (y % 2 == 1) {
+					rowStart -= 1;
+				}
+			}
+		};
+    },
 	placeDam : function(piece){
 		piece.dam = true;
 		if(this.dams.indexOf(piece) == -1) {
