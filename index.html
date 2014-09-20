@@ -6,6 +6,7 @@
         <script src="assets/js/phaser.min.js"></script>
         <script src="assets/src/board.js"></script>
         <script src="assets/src/evolutionCard.js"></script>
+        <script src="assets/src/taskbar.js"></script>
     </head>
     <body>
         Welcome to Beaver Evolution!
@@ -19,6 +20,8 @@
 
         var board = new Board(game);
         game.state.add('board', board, false);
+
+        var taskbar = new Taskbar(game);
 
         var evolutionCard = new EvolutionCard(game);
         game.state.add('evolutionCard', evolutionCard, false);

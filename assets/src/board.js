@@ -15,6 +15,9 @@ Board.prototype = {
         this.game.load.image("test_image", "../assets/images/phaser.png");
         this.game.load.image("green", "../assets/images/green.png");
         this.game.load.image("green_brown", "../assets/images/green_brown.png");
+        this.game.load.image("basic_hex_sprite_land", "/assets/images/basic_hex_sprite_land.png", 42, 48);
+        this.game.load.image("basic_hex_sprite_water", "/assets/images/basic_hex_sprite_water.png", 42, 48);
+        this.game.load.image("basic_hex_sprite_dam", "/assets/images/basic_hex_sprite_dam.png", 42, 48);
     },
     create: function() {
     	createBoard(this);
@@ -83,7 +86,6 @@ function Piece(type, game, hexCoordinate, height, width) {
 	this.width = width;
 	this.hexCoordinate = hexCoordinate;
 	this.dam = false;
-
 	this.button = game.add.button(hexCoordinate.pixelCenter['x'] - this.width/2, hexCoordinate.pixelCenter['y'] - this.height/2, "green", actionOnclick, this);
 
 	function actionOnclick(clickedButton) {
