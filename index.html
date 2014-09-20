@@ -18,12 +18,25 @@
 
         function preload () {
 
+            game.load.image("test_image", "assets/images/phaser.png");
+
         }
 
         function create () {
 
+
+            // TODO: implement some callback to handle board clicks (mainly for adding dams;)
+            game.boardCallbackHandler = function (obj) {
+                console.log(obj);
+            };
+
             var board = new Board(game);
-            game.input.onDown.add(board.handleMouseClick, this);
+
+            
+
+            //game.input.onDown.add(board.handleMouseClick, this);
+
+
 
 
         }
