@@ -5,6 +5,8 @@
         <title>hello phaser!</title>
         <script src="assets/js/phaser.min.js"></script>
         <script src="assets/src/board.js"></script>
+        <script src="assets/src/taskbar.js"></script>
+
     </head>
     <body>
         Welcome to Beaver Evolution!
@@ -19,6 +21,7 @@
         function preload () {
 
             game.load.image("test_image", "assets/images/phaser.png");
+            game.load.spritesheet('build', 'assets/buttons/button_sprite_sheet.png', 193, 71);
 
         }
 
@@ -31,6 +34,7 @@
             };
 
             var board = new Board(game);
+            var taskbar = new Taskbar(game);
 
             
 
