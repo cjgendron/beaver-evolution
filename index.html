@@ -19,6 +19,9 @@
         var game = new Phaser.Game(800, 600, Phaser.AUTO, '', null);
 
         var board = new Board(game);
+        game.getBoard = function() {
+            return board;
+        };
         game.state.add('board', board, false);
 
         var taskbar = new Taskbar(game);
@@ -34,9 +37,7 @@
             console.log(obj);
         };
 
-        game.getBoard = function() {
-            return board;
-        };
+        
 
     };
 
