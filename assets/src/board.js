@@ -25,7 +25,7 @@ Board.prototype = {
 			var rowStart = 0;
 			for (var y = 0; y < board.numPiecesVert; y++){
 				for(var x = rowStart; x < rowStart + board.numPiecesHor; x++){
-					board.pieces[[x,y]] = new Piece ("type", board, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight), board.pieceHeight, board.pieceWidth);
+					board.pieces[[x,y]] = new Piece ("type", board, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight));
 				}
 				if (y % 2 == 1) {
 					rowStart -= 1;
@@ -47,7 +47,7 @@ Board.prototype = {
 
 	drawBoard : function(game) {
 		for (piece in this.pieces) {
-			this.pieces[piece].drawPiece(this);
+			this.pieces[piece].drawPiece();
 		}
 	},
 
@@ -65,8 +65,6 @@ function Piece(type, board, hexCoordinate) {
 	this.dam = false;
 	this.button;
 
-	this.drawPiece();
-
 };
 
 Piece.prototype = {
@@ -77,6 +75,7 @@ Piece.prototype = {
 			this.button.destroy();
 		}
 		console.log('here');
+		console.log(this.game);
 		var horizontalOffset = (this.game.width - (this.width * (this.game.getBoard().numPiecesHor + 0.5))) / 2.0;
 		this.button = this.game.add.button(this.hexCoordinate.pixelCenter['x'] + horizontalOffset, 
 			this.hexCoordinate.pixelCenter['y'], 

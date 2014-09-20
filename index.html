@@ -16,29 +16,28 @@
 
     window.onload = function() {
 
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', null);
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create });
+        function preload () {
 
-        var board = new Board(game);
-        game.getBoard = function() {
-            return board;
+        }
+        function create () {
+            var board = new Board(game);
+            game.getBoard = function() {
+                return board;
+            };
+            //board.create();
+            game.state.add('board', board, false);
+            var taskbar = new Taskbar(game);
+            var evolutionCard = new EvolutionCard(game);
+            game.state.add('evolutionCard', evolutionCard, false);
+            // change this for now to test your state; we'll link it together later
+            game.state.start('board');
+            // TODO: implement some callback to handle board clicks (mainly for adding dams;)
+            game.boardCallbackHandler = function(obj) {
+                console.log(obj);
+            };
+            
         };
-        game.state.add('board', board, false);
-
-        var taskbar = new Taskbar(game);
-
-        var evolutionCard = new EvolutionCard(game);
-        game.state.add('evolutionCard', evolutionCard, false);
-
-        // change this for now to test your state; we'll link it together later
-        game.state.start('board');
-
-        // TODO: implement some callback to handle board clicks (mainly for adding dams;)
-        game.boardCallbackHandler = function(obj) {
-            console.log(obj);
-        };
-
-        
-
     };
 
     </script>
