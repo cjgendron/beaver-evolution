@@ -3,6 +3,9 @@ beaver-evolution
 
 How to set up with OpenShift
 ===
+
+URL: http://6073-beaverevolution.rhcloud.com/
+
 1. Put your ssh public key on Openshift
 2. ```cd``` into this repo, then run: 
 ```
