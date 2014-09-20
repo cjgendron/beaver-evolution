@@ -1,5 +1,4 @@
 function Board(game) {
-
 	this.game = game;
 	this.pieces = {};
 	this.dams = [];
@@ -15,7 +14,7 @@ function Board(game) {
 		var rowStart = 0;
 		for (var y = 0; y < board.numPiecesVert; y++){
 			for(var x = rowStart; x < rowStart + board.numPiecesHor; x++){
-				board.pieces[[x,y]] = new Piece ("type", board.game, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight), board.pieceHeight, board.pieceWidth);
+				board.pieces[[x,y]] = new Piece ("type", board, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight));
 			}
 			if (y % 2 == 1) {
 				rowStart -= 1;
@@ -26,6 +25,29 @@ function Board(game) {
 
 Board.prototype = {
 
+	preload: function() {
+        this.game.load.image("test_image", "../assets/images/phaser.png");
+        this.game.load.image("green", "../assets/images/green.png");
+        this.game.load.image("green_brown", "../assets/images/green_brown.png");
+        this.game.load.image("basic_hex_sprite_land", "/assets/images/basic_hex_sprite_land.png", 42, 48);
+        this.game.load.image("basic_hex_sprite_water", "/assets/images/basic_hex_sprite_water.png", 42, 48);
+        this.game.load.image("basic_hex_sprite_dam", "/assets/images/basic_hex_sprite_dam.png", 42, 48);
+    },
+    create: function() {
+    	createBoard(this);
+    	this.drawBoard(this.game);
+        function createBoard(board) {
+			var rowStart = 0;
+			for (var y = 0; y < board.numPiecesVert; y++){
+				for(var x = rowStart; x < rowStart + board.numPiecesHor; x++){
+					board.pieces[[x,y]] = new Piece ("type", board.game, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight), board.pieceHeight, board.pieceWidth);
+				}
+				if (y % 2 == 1) {
+					rowStart -= 1;
+				}
+			}
+		};
+    },
 	placeDam : function(piece){
 		piece.dam = true;
 		if(this.dams.indexOf(piece) == -1) {
@@ -46,70 +68,38 @@ Board.prototype = {
 
 	getDamCount : function(){
 		return this.dams.length;
-	},
-
-	handleMouseClick : function(event){
-		console.log(event);
-		//convert into nearest hex
-		var xHex = (1/3*sqrt(3) * (event.x - this.pieceWidth/2) - 1/3) * (event.y - this.pieceHeight/2) / (this.pieceHeight/2);
-		var yHex = 2/3 * event.y / (this.pieceHeight/2);
-		var rxHex = Math.floor(xHex);
-		var ryHex = Math.floor(yHex);
-		var hexGuess = new HexCoordinate(rxHex,ryHex);
-		var distance = (xHex - rxHex)^2 + (yHex-ryHex)^2
-		var neighbors = pieceGuess.getNeighbors();
-		for (neighbors in neighbor){
-			if ((xHex - neighbors[neighbor].hexCoordinate.pixelCenter[x])^2 + (yHex-neighbors[neighbor].hexCoordinate.pixelCenter[y])^2 < distance) {
-				distance = (xHex - rxHex)^2 + (yHex-ryHex)^2
-				pieceGuess = neighbors[neighbor];
-			}
-		}
-		//pieceGuess now is the clicked piece
-		console.log();
-
-
 	}
 };
 
-function Piece(type, game, hexCoordinate, height, width) {
+function Piece(type, board, hexCoordinate) {
 	this.type = type;
-	this.game = game;
-	this.height = height;
-	this.width = width;
+	this.game = board.game;
+	this.height = hexCoordinate.height;
+	this.width = hexCoordinate.width;
 	this.hexCoordinate = hexCoordinate;
 	this.dam = false;
-	this.button = game.add.button(hexCoordinate.pixelCenter['x'] - this.width/2, hexCoordinate.pixelCenter['y'] - this.height/2, "green", actionOnclick, this);
 
-	function actionOnclick(clickedButton) {
-	   this.dam = true;
-	   game.getBoard().placeDam(this);
-	   this.button.destroy();
-	   this.button = game.add.button(hexCoordinate.pixelCenter['x'] - this.width/2, hexCoordinate.pixelCenter['y'] - this.height/2, "green_brown", actionOnclick, this);
-	}
+	this.drawPiece(board);
 
 };
 
 Piece.prototype = {
 
 	drawPiece : function(board) {
-		var shape = board.game.add.graphics(0, 0);  //init rect
-        shape.lineStyle(2, 0x0000FF, 1); // width, color (0x0000FF), alpha (0 -> 1) // required settings
-        shape.beginFill(0xFFFFFF, 1) // color (0xFFFF0B), alpha (0 -> 1) // required settings
+		
 		var horizontalOffset = (board.game.width - (board.pieceWidth * (board.numPiecesHor + 0.5))) / 2.0;
+		this.button = this.game.add.button(this.hexCoordinate.pixelCenter['x'] + horizontalOffset, this.hexCoordinate.pixelCenter['y'], "basic_hex_sprite_water", actionOnclick, this);
+		this.button.scale.x = this.width/this.button.width;
+		this.button.scale.y = this.height/this.button.height;
+		this.button.x -= this.button.width/2;
+		this.button.y -= this.button.height/2;
 
-
-		// for (var i = 0; i < 6; i++){
-		//     var angle = 2 * Math.PI / 6 * (i + 0.5);
-		//     var size = this.hexCoordinate.height / 2.0;
-		//     var x_i = this.hexCoordinate.pixelCenter['x'] + size * Math.cos(angle) + horizontalOffset;
-		//     var y_i = this.hexCoordinate.pixelCenter['y'] + size * Math.sin(angle);
-		//     if (i == 0){
-		//         shape.moveTo(x_i, y_i);
-		//     }
-		//     else {
-		//         shape.lineTo(x_i, y_i);
-		//     }
-		// }
+		function actionOnclick(clickedButton) {
+		   this.dam = true;
+		   this.game.getBoard().placeDam(this);
+		   this.button.destroy();
+		   this.button = this.game.add.button(this.hexCoordinate.pixelCenter['x'] - this.width/2, this.hexCoordinate.pixelCenter['y'] - this.height/2, "green_brown", actionOnclick, this);
+		}
 	},
 
 	getCoordinate : function() {
