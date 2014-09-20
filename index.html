@@ -29,6 +29,10 @@
             //board.create();
             game.state.add('board', board, false);
             var taskbar = new Taskbar(game);
+            game.getTaskbar = function() {
+                return taskbar;
+            };
+            game.state.add('taskbar', taskbar, false);
             var evolutionCard = new EvolutionCard(game);
             game.state.add('evolutionCard', evolutionCard, false);
             // change this for now to test your state; we'll link it together later

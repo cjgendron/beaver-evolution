@@ -32,6 +32,7 @@ Board.prototype = {
 				}
 			}
 		};
+		this.game.getTaskbar().create();
     },
 	placeDam : function(piece){
 		//piece.dam = true;

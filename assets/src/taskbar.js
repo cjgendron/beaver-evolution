@@ -2,23 +2,8 @@ function Taskbar(game) {
 	this.game = game;
 	board = game.getBoard()
 	this.damCount = board.getDamCount();
-	createTaskbar(this);
 
 
-	function actionOnBuild(taskbar){
-		this.damCount += 1;
-		console.log(this.damCount);
-		this.damCountText.setText(this.damCount);
-	}
-
-	function actionOnPopulate(){
-		// numBeavers = Math.ceil(0.25 * board.numBeavers);
-		// beaverCountText.setText(numBeavers);
-	}
-
-	function actionOnEvolve(){
-		// this.game.switchState(gameObject.evolutionCard)
-	}
 }
 
 Taskbar.prototype = {
@@ -26,12 +11,27 @@ Taskbar.prototype = {
 
 	},
 	create: function() {
-		taskbar.beaverImage = game.add.image(100, 500, 'beaverImage');
-		taskbar.beaverCountText = game.add.text(150, 500, 'numBeavers', {fill: "#ff0044"});
-		taskbar.damImage = game.add.image(200, 500, 'damImage');
-		taskbar.damCountText = game.add.text(250, 500, taskbar.damCount, { fill: "#ff0044"});
-		taskbar.buildButton = game.add.button(500, 500, 'build', actionOnBuild, taskbar);
-		taskbar.populateButton = game.add.button(600, 500, 'populate', actionOnPopulate, taskbar);
-		taskbar.evolveButton = game.add.button(700, 500, 'evolve', actionOnEvolve, taskbar);
+		beaverImage = this.game.add.image(100, 500, 'beaverImage');
+		beaverCountText = this.game.add.text(150, 500, 'numBeavers', {fill: "#ff0044"});
+		damImage = this.game.add.image(200, 500, 'damImage');
+		damCountText = this.game.add.text(250, 500, this.damCount, { fill: "#ff0044"});
+		buildButton = this.game.add.button(500, 500, 'build', this.actionOnBuild, this);
+		populateButton = this.game.add.button(600, 500, 'populate', this.actionOnPopulate, this);
+		evolveButton = this.game.add.button(700, 500, 'evolve', this.actionOnEvolve, this);
+	},
+
+	actionOnBuild : function(){
+		this.damCount += 1;
+		console.log(this.damCount);
+		this.damCountText.setText(this.damCount);
+	},
+
+	actionOnPopulate : function(){
+		// numBeavers = Math.ceil(0.25 * board.numBeavers);
+		// beaverCountText.setText(numBeavers);
+	},
+
+	actionOnEvolve : function(){
+		// this.game.switchState(gameObject.evolutionCard)
 	}
 }
