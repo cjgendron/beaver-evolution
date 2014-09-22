@@ -1,5 +1,7 @@
-var EvolutionCard = function(game) {
-    this.game = game;
+var EvolutionCard = function(main, group) {
+    this.main = main;
+    this.game = main.game;
+    this.group = group;
     this.card = [
         Category("Craftsmanship", 0, [
                 Trait(0, "+2 dam blocks while building", false),
@@ -17,47 +19,41 @@ var EvolutionCard = function(game) {
                 Trait(2, "Only 50% dam loss on fire", false)
             ]),
     ];
+    this.createEvolutionCard();
 }
 
 EvolutionCard.prototype = {
-    preload: function() {
-        this.game.load.image('checkbox_no', '../assets/images/checkbox_no.png');
-        this.game.load.image('checkbox_yes', '../assets/images/checkbox_yes.png');
+    getEvolutionCard: function() {
+        return this.card;
     },
-    create: function() {
-        this.game.stage.backgroundColor = '#ffffff';
-
-        var text = "EVOLUTION CARD";
+    createEvolutionCard: function() {
         var titleStyle = { font: "65px Arial", fill: "#01579b", align: "center" };
         var traitStyle = { font: "30px Arial", fill: "#000000", align: "left", wordWrap: true, wordWrapWidth: this.game.width/3 - 50};
 
-        var t = this.game.add.text(this.game.world.centerX-300, 0, text, titleStyle);
+        var text = "EVOLUTION CARD";
+        this.group.add(new Phaser.Text(this.game, this.game.world.centerX-300, 0, text, titleStyle));
+
         for (i = 0; i < this.card.length; i++) {
             for (j = 0; j < this.card[i].traits.length; j++) {
-                x = this.game.width/3*i;
-                y = 100+(this.game.height/4*j);
                 trait = this.card[i].traits[j];
-                this.game.add.text(50+x, y, trait.description, traitStyle);
-                traitImage = trait.hasTrait ? 'checkbox_yes' :'checkbox_no';
-                // var img = this.game.add.image(this.game.width/3*i, 100+(this.game.height/4*j), traitImage);
-                // img.scale.setTo(0.05, 0.05);
-                // img.inputEnabled = true;
-                // img.events.onInputDown.add(this.evolve, this.card[i].traits[j], img);
-                this.button = this.game.add.button(x, y, traitImage, this.evolve, this);
-                this.button.scale.setTo(0.05, 0.05);
+                trait.setX(this.game.width/3*i);
+                trait.setY(100+(this.game.height/4*j));
+                trait.setText(new Phaser.Text(this.game, 50+trait.getX(), trait.getY(), trait.description, traitStyle));
+                this.group.add(trait.getText());
+                trait.setButton(new Phaser.Button(this.game, trait.getX(), trait.getY(), trait.getTraitImage(), this.evolve, this));
+                this.group.add(trait.getButton());
             }
         }
-        
-    },
-    update: function() {
-
-    },
-    render: function() {
-
     },
     evolve: function(button) {
         trait.hasTrait = !trait.hasTrait;
-        this.game.state.start('board', false, false, this.game);
+        // switch states
+    },
+    show: function() {
+        this.group.visible = true;
+    },
+    hide: function() {
+        this.group.visible = false;
     }
 }
 
@@ -70,9 +66,40 @@ var Category = function(name, highestStage, traits) {
 }
 
 var Trait = function(stage, description, hasTrait) {
+    this.xCoordinate;
+    this.yCoordinate;
+    this.button;
+    this.text;
     return {
         stage: stage,
         description: description,
-        hasTrait: hasTrait
+        hasTrait: hasTrait,
+        setX: function(x) {
+            this.xCoordinate = x;
+        },
+        setY: function(y) {
+            this.yCoordinate = y;
+        },
+        getX: function() {
+            return this.xCoordinate;
+        },
+        getY: function() {
+            return this.yCoordinate;
+        },
+        getTraitImage: function() {
+            return this.hasTrait ? 'checkbox_yes' :'checkbox_no';
+        },
+        setButton: function(button) {
+            this.button = button;
+        },
+        getButton: function() {
+            return this.button;
+        },
+        setText: function(text) {
+            this.text = text
+        },
+        getText: function() {
+            return this.text;
+        }
     }
 }

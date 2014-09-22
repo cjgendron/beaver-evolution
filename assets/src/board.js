@@ -1,43 +1,41 @@
-function Board(game) {
-	this.game = game;
+function Board(main, group) {
+	this.main = main;
+	this.game = main.game;
+	this.group = group;
 	this.pieces = {};
 	this.dams = [];
 	this.numPiecesVert = 9;
 	this.pieceHeight = this.game.height/(1 + .75 * (this.numPiecesVert - 1));
 	this.pieceWidth = Math.sqrt(3)/2.0 * this.pieceHeight;
 	this.numPiecesHor = Math.floor((this.game.width/this.pieceWidth) - 0.5);
-	this.pieceButtons;
+	this.createBoard();
+	// testing
+	this.group.add(new Phaser.Image(this.game, 0, 0, 'water'));
+	this.drawBoard(this.game);
 };
 
 Board.prototype = {
-
-	preload: function() {
-        this.game.load.image("test_image", "../assets/images/phaser.png");
-        this.game.load.image("green", "../assets/images/green.png");
-        this.game.load.image("green_brown", "../assets/images/green_brown.png");
-        this.game.load.image("basic_hex_sprite_land", "/assets/images/land.png", 42, 48);
-        this.game.load.image("basic_hex_sprite_water", "/assets/images/lake.png", 42, 48);
-        this.game.load.image("basic_hex_sprite_dam", "/assets/images/dam.png", 42, 48);
-    },
-    create: function() {
-    	this.game.stage.backgroundColor = "#000000";
-    	createBoard(this);
-    	this.drawBoard(this.game);
-    	this.pieceButtons = this.game.add.group();
-        function createBoard(board) {
-			var rowStart = 0;
-			for (var y = 0; y < board.numPiecesVert; y++){
-				for(var x = rowStart; x < rowStart + board.numPiecesHor; x++){
-					board.pieces[[x,y]] = new Piece ("type", board, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight));
-					// this.pieceButtons.create(board.pieces[[x,y]].hexCoordinate.xHex, board.pieces[[x,y]].hexCoordinate.yHex, "basic_hex_sprite_dam");
-				}
-				if (y % 2 == 1) {
-					rowStart -= 1;
-				}
+	createBoard: function() {
+		var rowStart = 0;
+		for (var y = 0; y < this.numPiecesVert; y++){
+			for(var x = rowStart; x < rowStart + this.numPiecesHor; x++){
+				this.pieces[[x,y]] = new Piece ("type", this, new HexCoordinate(x, y, this.pieceWidth, this.pieceHeight));
 			}
-		};
-		this.game.getTaskbar().create();
-    },
+			if (y % 2 == 1) {
+				rowStart -= 1;
+			}
+		}
+	},
+	show: function() {
+		this.group.visible = true;
+	},
+	hide: function() {
+		this.group.visible = false;
+	},
+	next: function() {
+		this.hide();
+		this.main.evolutionCard.show();
+	},
 	placeDam : function(piece){
 		//piece.dam = true;
 		if(this.dams.indexOf(piece) == -1) {
@@ -64,29 +62,27 @@ Board.prototype = {
 
 function Piece(type, board, hexCoordinate) {
 	this.type = type;
+	this.board = board;
 	this.game = board.game;
 	this.height = hexCoordinate.height;
 	this.width = hexCoordinate.width;
 	this.hexCoordinate = hexCoordinate;
 	this.dam = false;
 	this.button;
-
 };
 
 Piece.prototype = {
 
 	drawPiece : function() {
-		
 		if (this.button != null) {
 			this.button.destroy();
 		}
-		console.log('here');
-		console.log(this.game);
-		var horizontalOffset = (this.game.width - (this.width * (this.game.getBoard().numPiecesHor + 0.5))) / 2.0;
-		this.button = this.game.add.button(this.hexCoordinate.pixelCenter['x'] + horizontalOffset, 
+		
+		var horizontalOffset = (this.board.game.width - (this.width * (this.board.numPiecesHor + 0.5))) / 2.0;
+		this.button = this.board.group.add(new Phaser.Button(this.board.game, this.hexCoordinate.pixelCenter['x'] + horizontalOffset, 
 			this.hexCoordinate.pixelCenter['y'], 
-			this.dam ? "basic_hex_sprite_dam": 
-				(Math.random() < 0.5 ? "basic_hex_sprite_water" : "basic_hex_sprite_land"), 
+			this.dam ? "dam": 
+				(Math.random() < 0.5 ? "water" : "land")), 
 			actionOnClick, this);
 		this.button.scale.x = this.width/this.button.width;
 		this.button.scale.y = this.height/this.button.height;
@@ -95,9 +91,8 @@ Piece.prototype = {
 
 		function actionOnClick(clickedButton) {
 		   this.dam = !this.dam;
-		   this.dam ? this.game.getBoard().placeDam(this) : this.game.getBoard().removeDam(this);
+		   this.dam ? this.board.placeDam(this) : this.board.removeDam(this);
 		   this.drawPiece();
-		   // this.pieceButtons.destroy(false, true);
 		}
 	},
 
