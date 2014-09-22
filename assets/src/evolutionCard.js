@@ -4,19 +4,19 @@ var EvolutionCard = function(main, group) {
     this.group = group;
     this.card = [
         Category("Craftsmanship", 0, [
-                Trait(0, "+2 dam blocks while building", false),
-                Trait(1, "Only 50% population lost on poachers", false),
-                Trait(2, "Only 50% loss on flood", false)
+                new Trait(0, "+2 dam blocks while building", false),
+                new Trait(1, "Only 50% population lost on poachers", false),
+                new Trait(2, "Only 50% loss on flood", false)
             ]),
         Category("Craftsmanship", 0, [
-                Trait(0, "Lumberjack only affects for one turn", false),
-                Trait(1, "Only 25% loss on tornado", false),
-                Trait(2, "Can increase population by 50% when populating", false)
+                new Trait(0, "Lumberjack only affects for one turn", false),
+                new Trait(1, "Only 25% loss on tornado", false),
+                new Trait(2, "Can increase population by 50% when populating", false)
             ]),
         Category("Craftsmanship", 0, [
-                Trait(0, "No population loss for famine", false),
-                Trait(1, "Only 25% loss on draught", false),
-                Trait(2, "Only 50% dam loss on fire", false)
+                new Trait(0, "No population loss for famine", false),
+                new Trait(1, "Only 25% loss on draught", false),
+                new Trait(2, "Only 50% dam loss on fire", false)
             ]),
     ];
     this.createEvolutionCard();
@@ -29,7 +29,7 @@ EvolutionCard.prototype = {
     },
     createEvolutionCard: function() {
         var titleStyle = { font: "65px Arial", fill: "#01579b", align: "center" };
-        var traitStyle = { font: "30px Arial", fill: "#000000", align: "left", wordWrap: true, wordWrapWidth: this.game.width/3 - 50};
+        var traitStyle = { font: "25px Arial", fill: "#000000", align: "left", wordWrap: true, wordWrapWidth: this.game.width/3 - 50};
 
         var text = "EVOLUTION CARD";
         this.group.add(new Phaser.Text(this.game, this.game.world.centerX-300, 0, text, titleStyle));
@@ -39,22 +39,30 @@ EvolutionCard.prototype = {
                 trait = this.card[i].traits[j];
                 trait.setX(this.game.width/3*i);
                 trait.setY(100+(this.game.height/4*j));
+                trait.setGame(this.game);
+                trait.setGroup(this.group);
+                trait.setMain(this.main);
                 trait.setText(new Phaser.Text(this.game, 50+trait.getX(), trait.getY(), trait.description, traitStyle));
                 this.group.add(trait.getText());
                 button = new Phaser.Button(this.game, trait.getX(), trait.getY(), trait.getTraitImage());
                 button.inputEnabled = true;
-                button.events.onInputDown.add(this.evolve, this, this.game);
+                button.events.onInputDown.add(this.evolve, this);
                 trait.setButton(button);
                 this.group.add(trait.getButton());
             }
         }
     },
-    evolve: function(button, game) {
-        console.log("evolve");
+    evolve: function(button) {
+        cardStats = [];
+        for (i = 0; i < this.card.length; i++) {
+            for (j = 0; j < this.card[i].traits.length; j++) {
+                cardStats.push(this.card[i].traits[j].hasTrait);
+            }
+        }
+        console.log(cardStats.toString());
         trait.hasTrait = !trait.hasTrait;
-        trait.updateTraitImage();
+        trait.updateTraitImage(button);
         this.next();
-        // switch states
     },
     show: function() {
         this.game.stage.backgroundColor = "#ffffff";
@@ -82,6 +90,9 @@ var Trait = function(stage, description, hasTrait) {
     this.yCoordinate;
     this.button;
     this.text;
+    this.game;
+    this.group;
+    this.main;
     return {
         stage: stage,
         description: description,
@@ -113,7 +124,25 @@ var Trait = function(stage, description, hasTrait) {
         getText: function() {
             return this.text;
         },
-        updateTraitImage: function(button, game) {
+        setGame: function(game) {
+            this.game = game;
+        },
+        setGroup: function(group) {
+            this.group = group;
+        },
+        setMain: function(main) {
+            this.main = main;
+        },
+        updateTraitImage: function(button) {
+            if (this.button != null) {
+                this.button.destroy();
+            }
+            
+            this.button = this.group.add(new Phaser.Button(this.game, this.getX(), 
+                this.getY(), 
+                this.getTraitImage()));
+            this.button.inputEnabled = true;
+            this.button.events.onInputDown.add(function(){console.log("hi")}, this);
             // fix this!!!
             // button = new Phaser.Button(game, this.getX(), this.getY(), this.getTraitImage());
             // button.inputEnabled = true;

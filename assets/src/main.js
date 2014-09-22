@@ -4,18 +4,6 @@ function BeaverEvolution(game) {
     this.evolutionCard;
     this.taskbar;
     this.beavers;
-    // console.log("initialize");
-    // this.game = game;
-    // console.log(this.game);
-    // console.log(this.game.add);
-    // boardGroup = this.game.add.group();
-    // evolutionCardGroup = this.game.add.group();
-    // taskbarGroup = this.game.add.group();
-    // this.board = new Board(this, boardGroup);
-    // this.evolutionCard = new EvolutionCard(this, evolutionCardGroup);
-    // this.taskbar = new Taskbar(this, taskbarGroup);
-    // this.beavers = 8;
-    // console.log("Welcome to Beaver Evolution!");
 }
 
 BeaverEvolution.prototype = {
@@ -54,10 +42,7 @@ BeaverEvolution.prototype = {
         this.board.show();
     },
     update: function() {
-        setTimeout(function() {
-            this.board.hide();
-        }, 10000)
-
+        
     },
     render: function() {
 
