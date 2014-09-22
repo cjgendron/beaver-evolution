@@ -9,7 +9,7 @@ function Board(main, group) {
 	this.pieceWidth = Math.sqrt(3)/2.0 * this.pieceHeight;
 	this.numPiecesHor = Math.floor((this.game.width/this.pieceWidth) - 0.5);
 	this.createBoard();
-	this.drawBoard(this.game);
+	this.drawBoard();
 };
 
 Board.prototype = {
@@ -47,7 +47,7 @@ Board.prototype = {
 		this.dams.splice(this.dams.indexOf(piece), 1);
 	},
 
-	drawBoard : function(game) {
+	drawBoard : function() {
 		for (piece in this.pieces) {
 			this.pieces[piece].drawPiece();
 		}
@@ -56,9 +56,6 @@ Board.prototype = {
 	getDamCount : function(){
 		return this.dams.length;
 	},
-	callback: function() {
-		console.log("hi");
-	}
 };
 
 function Piece(type, board, hexCoordinate) {
