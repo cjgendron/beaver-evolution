@@ -114,6 +114,7 @@ var Trait = function(stage, description, hasTrait) {
             return this.text;
         },
         updateTraitImage: function(button, game) {
+            // fix this!!!
             // button = new Phaser.Button(game, this.getX(), this.getY(), this.getTraitImage());
             // button.inputEnabled = true;
             // button.events.onInputDown.add(function() {console.log('kind of working')}, this);

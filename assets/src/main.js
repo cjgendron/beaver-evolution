@@ -1,16 +1,21 @@
 function BeaverEvolution(game) {
-    console.log("initialize");
     this.game = game;
-    console.log(this.game);
-    console.log(this.game.add);
-    boardGroup = this.game.add.group();
-    evolutionCardGroup = this.game.add.group();
-    taskbarGroup = this.game.add.group();
-    this.board = new Board(this, boardGroup);
-    this.evolutionCard = new EvolutionCard(this, evolutionCardGroup);
-    this.taskbar = new Taskbar(this, taskbarGroup);
-    this.beavers = 8;
-    console.log("Welcome to Beaver Evolution!");
+    this.board;
+    this.evolutionCard;
+    this.taskbar;
+    this.beavers;
+    // console.log("initialize");
+    // this.game = game;
+    // console.log(this.game);
+    // console.log(this.game.add);
+    // boardGroup = this.game.add.group();
+    // evolutionCardGroup = this.game.add.group();
+    // taskbarGroup = this.game.add.group();
+    // this.board = new Board(this, boardGroup);
+    // this.evolutionCard = new EvolutionCard(this, evolutionCardGroup);
+    // this.taskbar = new Taskbar(this, taskbarGroup);
+    // this.beavers = 8;
+    // console.log("Welcome to Beaver Evolution!");
 }
 
 BeaverEvolution.prototype = {
@@ -37,9 +42,15 @@ BeaverEvolution.prototype = {
         this.game.load.image('checkbox_yes', '../assets/images/checkbox_yes.png', 40, 40);
     },
     create: function() {
-        console.log("starting create");
         this.game.stage.backgroundColor = "#ffffff";
-        console.log("why");
+        boardGroup = this.game.add.group();
+        evolutionCardGroup = this.game.add.group();
+        taskbarGroup = this.game.add.group();
+        this.board = new Board(this, boardGroup);
+        this.evolutionCard = new EvolutionCard(this, evolutionCardGroup);
+        this.taskbar = new Taskbar(this, taskbarGroup);
+        this.beavers = 8;
+        console.log("Welcome to Beaver Evolution!");
         this.board.show();
     },
     update: function() {

@@ -17,51 +17,10 @@
     <script type="text/javascript">
 
     window.onload = function() {
-
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload: preload, create: create});
-        // var game = new Phaser.Game(800, 600, Phaser.AUTO, '', null);
-        // console.log(game);
-        // var main = new BeaverEvolution(game);
-        // game.state.add('main', main, false);
-        // game.state.start('main');
-
-        function preload () {
-            this.game.load.image("test_image", "../assets/images/phaser.png");
-            this.game.load.image("green", "../assets/images/green.png");
-            this.game.load.image("green_brown", "../assets/images/green_brown.png");
-            this.game.load.image("land", "/assets/images/land.png", 42, 48);
-            this.game.load.image("water", "/assets/images/water.png", 42, 48);
-            this.game.load.image("dam", "/assets/images/dam.png", 42, 48);
-            this.game.load.image('checkbox_no', '../assets/images/checkbox_no.png', 40, 40);
-            this.game.load.image('checkbox_yes', '../assets/images/checkbox_yes.png', 40, 40);
-        }
-        function create () {
-            var main = new BeaverEvolution(game);
-            // this.game.state.add('main', main, false);
-            // this.game.state.start('main');
-            // var board = new Board(game);
-            // game.getBoard = function() {
-            //     return board;
-            // };
-            //board.create();
-            // game.state.add('board', board, false);
-            // var taskbar = new Taskbar(game);
-            // game.getTaskbar = function() {
-            //     return taskbar;
-            // };
-            // game.state.add('game', game, false);
-            // game.state.add('taskbar', taskbar, false);
-            // var evolutionCard = new EvolutionCard(game);
-            // game.state.add('evolutionCard', evolutionCard, false);
-            // // change this for now to test your state; we'll link it together later
-            // game.state.start('evolutionCard');
-            // // TODO: implement some callback to handle board clicks (mainly for adding dams;)
-            // game.boardCallbackHandler = function(obj) {
-            //     console.log(obj);
-            // };
-            
-        };
-
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', null);
+        var main = new BeaverEvolution(game);
+        game.state.add('main', main, false);
+        game.state.start('main');
     };
 
     </script>
