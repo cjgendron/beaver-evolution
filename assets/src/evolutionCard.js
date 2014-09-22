@@ -20,6 +20,7 @@ var EvolutionCard = function(main, group) {
             ]),
     ];
     this.createEvolutionCard();
+    this.hide();
 }
 
 EvolutionCard.prototype = {
@@ -40,20 +41,31 @@ EvolutionCard.prototype = {
                 trait.setY(100+(this.game.height/4*j));
                 trait.setText(new Phaser.Text(this.game, 50+trait.getX(), trait.getY(), trait.description, traitStyle));
                 this.group.add(trait.getText());
-                trait.setButton(new Phaser.Button(this.game, trait.getX(), trait.getY(), trait.getTraitImage(), this.evolve, this));
+                button = new Phaser.Button(this.game, trait.getX(), trait.getY(), trait.getTraitImage());
+                button.inputEnabled = true;
+                button.events.onInputDown.add(this.evolve, this, this.game);
+                trait.setButton(button);
                 this.group.add(trait.getButton());
             }
         }
     },
-    evolve: function(button) {
+    evolve: function(button, game) {
+        console.log("evolve");
         trait.hasTrait = !trait.hasTrait;
+        trait.updateTraitImage();
+        this.next();
         // switch states
     },
     show: function() {
+        this.game.stage.backgroundColor = "#ffffff";
         this.group.visible = true;
     },
     hide: function() {
         this.group.visible = false;
+    },
+    next: function() {
+        this.hide();
+        this.main.board.show();
     }
 }
 
@@ -100,6 +112,17 @@ var Trait = function(stage, description, hasTrait) {
         },
         getText: function() {
             return this.text;
+        },
+        updateTraitImage: function(button, game) {
+            // button = new Phaser.Button(game, this.getX(), this.getY(), this.getTraitImage());
+            // button.inputEnabled = true;
+            // button.events.onInputDown.add(function() {console.log('kind of working')}, this);
+            // if (this.button != null) {
+            //     this.button.kill();
+            // }
+            // this.button.setFrames(this.getTraitImage());
+            // this.button.key = this.getTraitImage();
+            // this.setButton(button);
         }
     }
 }
