@@ -9,9 +9,7 @@ function Board(main, group) {
 	this.pieceWidth = Math.sqrt(3)/2.0 * this.pieceHeight;
 	this.numPiecesHor = Math.floor((this.game.width/this.pieceWidth) - 0.5);
 	this.createBoard();
-	// testing
-	this.group.add(new Phaser.Image(this.game, 0, 0, 'water'));
-	this.drawBoard(this.game);
+	this.drawBoard();
 };
 
 Board.prototype = {
@@ -41,7 +39,6 @@ Board.prototype = {
 		if(this.dams.indexOf(piece) == -1) {
 			this.dams.push(piece);
 		}
-		this.game.state.start('evolutionCard', false, false, this.game);
 	},
 
 	removeDam : function(piece){
@@ -49,7 +46,7 @@ Board.prototype = {
 		this.dams.splice(this.dams.indexOf(piece), 1);
 	},
 
-	drawBoard : function(game) {
+	drawBoard : function() {
 		for (piece in this.pieces) {
 			this.pieces[piece].drawPiece();
 		}
@@ -79,20 +76,21 @@ Piece.prototype = {
 		}
 		
 		var horizontalOffset = (this.board.game.width - (this.width * (this.board.numPiecesHor + 0.5))) / 2.0;
-		this.button = this.board.group.add(new Phaser.Button(this.board.game, this.hexCoordinate.pixelCenter['x'] + horizontalOffset, 
+		this.button = new Phaser.Button(this.board.game, this.hexCoordinate.pixelCenter['x'] + horizontalOffset, 
 			this.hexCoordinate.pixelCenter['y'], 
 			this.dam ? "dam": 
-				(Math.random() < 0.5 ? "water" : "land")), 
+				(Math.random() < 0.5 ? "water" : "land"), 
 			actionOnClick, this);
+		this.board.group.add(this.button);
 		this.button.scale.x = this.width/this.button.width;
 		this.button.scale.y = this.height/this.button.height;
 		this.button.x -= this.button.width/2;
 		this.button.y -= this.button.height/2;
 
 		function actionOnClick(clickedButton) {
-		   this.dam = !this.dam;
-		   this.dam ? this.board.placeDam(this) : this.board.removeDam(this);
-		   this.drawPiece();
+			this.dam = !this.dam;
+			this.dam ? this.board.placeDam(this) : this.board.removeDam(this);
+			this.drawPiece();
 		}
 	},
 
