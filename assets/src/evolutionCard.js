@@ -25,7 +25,7 @@ EvolutionCard.prototype = {
         this.game.load.image('checkbox_yes', '../assets/images/checkbox_yes.png');
     },
     create: function() {
-        this.game.stage.backgroundColor = '#4fc3f7';
+        this.game.stage.backgroundColor = '#ffffff';
 
         var text = "EVOLUTION CARD";
         var titleStyle = { font: "65px Arial", fill: "#01579b", align: "center" };
@@ -39,20 +39,12 @@ EvolutionCard.prototype = {
                 trait = this.card[i].traits[j];
                 this.game.add.text(50+x, y, trait.description, traitStyle);
                 traitImage = trait.hasTrait ? 'checkbox_yes' :'checkbox_no';
-                var img = this.game.add.image(this.game.width/3*i, 100+(this.game.height/4*j), traitImage);
-                img.scale.setTo(0.05, 0.05);
-                img.inputEnabled = true;
-                img.events.onInputDown.add(this.evolve, this.card[i].traits[j], img);
-                this.button = this.game.add.button(x, y, traitImage, actionOnclick, this);
+                // var img = this.game.add.image(this.game.width/3*i, 100+(this.game.height/4*j), traitImage);
+                // img.scale.setTo(0.05, 0.05);
+                // img.inputEnabled = true;
+                // img.events.onInputDown.add(this.evolve, this.card[i].traits[j], img);
+                this.button = this.game.add.button(x, y, traitImage, this.evolve, this);
                 this.button.scale.setTo(0.05, 0.05);
-
-                function actionOnclick(button) {
-                    console.log(trait.hasTrait);
-                    trait.hasTrait = !trait.hasTrait;
-                    traitImage = trait.hasTrait ? 'checkbox_yes' :'checkbox_no';
-                    this.button = this.game.add.button(button.x, button.y, traitImage, actionOnclick, this);
-                    this.button.scale.setTo(0.05, 0.05);
-                }
             }
         }
         
@@ -60,9 +52,12 @@ EvolutionCard.prototype = {
     update: function() {
 
     },
-    evolve: function(trait, img) {
+    render: function() {
+
+    },
+    evolve: function(button) {
         trait.hasTrait = !trait.hasTrait;
-        img.image = trait.hasTrait ? 'checkbox_yes' :'checkbox_no';
+        this.game.state.start('board', false, false, this.game);
     }
 }
 

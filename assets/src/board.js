@@ -6,6 +6,7 @@ function Board(game) {
 	this.pieceHeight = this.game.height/(1 + .75 * (this.numPiecesVert - 1));
 	this.pieceWidth = Math.sqrt(3)/2.0 * this.pieceHeight;
 	this.numPiecesHor = Math.floor((this.game.width/this.pieceWidth) - 0.5);
+	this.pieceButtons;
 };
 
 Board.prototype = {
@@ -14,18 +15,21 @@ Board.prototype = {
         this.game.load.image("test_image", "../assets/images/phaser.png");
         this.game.load.image("green", "../assets/images/green.png");
         this.game.load.image("green_brown", "../assets/images/green_brown.png");
-        this.game.load.image("basic_hex_sprite_land", "/assets/images/basic_hex_sprite_land.png", 42, 48);
-        this.game.load.image("basic_hex_sprite_water", "/assets/images/basic_hex_sprite_water.png", 42, 48);
-        this.game.load.image("basic_hex_sprite_dam", "/assets/images/basic_hex_sprite_dam.png", 42, 48);
+        this.game.load.image("basic_hex_sprite_land", "/assets/images/land.png", 42, 48);
+        this.game.load.image("basic_hex_sprite_water", "/assets/images/lake.png", 42, 48);
+        this.game.load.image("basic_hex_sprite_dam", "/assets/images/dam.png", 42, 48);
     },
     create: function() {
+    	this.game.stage.backgroundColor = "#000000";
     	createBoard(this);
     	this.drawBoard(this.game);
+    	this.pieceButtons = this.game.add.group();
         function createBoard(board) {
 			var rowStart = 0;
 			for (var y = 0; y < board.numPiecesVert; y++){
 				for(var x = rowStart; x < rowStart + board.numPiecesHor; x++){
 					board.pieces[[x,y]] = new Piece ("type", board, new HexCoordinate(x, y, board.pieceWidth, board.pieceHeight));
+					// this.pieceButtons.create(board.pieces[[x,y]].hexCoordinate.xHex, board.pieces[[x,y]].hexCoordinate.yHex, "basic_hex_sprite_dam");
 				}
 				if (y % 2 == 1) {
 					rowStart -= 1;
@@ -39,6 +43,7 @@ Board.prototype = {
 		if(this.dams.indexOf(piece) == -1) {
 			this.dams.push(piece);
 		}
+		this.game.state.start('evolutionCard', false, false, this.game);
 	},
 
 	removeDam : function(piece){
@@ -92,6 +97,7 @@ Piece.prototype = {
 		   this.dam = !this.dam;
 		   this.dam ? this.game.getBoard().placeDam(this) : this.game.getBoard().removeDam(this);
 		   this.drawPiece();
+		   // this.pieceButtons.destroy(false, true);
 		}
 	},
 
