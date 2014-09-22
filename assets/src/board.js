@@ -10,6 +10,7 @@ function Board(main, group) {
 	this.numPiecesHor = Math.floor((this.game.width/this.pieceWidth) - 0.5);
 	this.createBoard();
 	this.drawBoard();
+
 };
 
 Board.prototype = {
@@ -39,6 +40,10 @@ Board.prototype = {
 		if(this.dams.indexOf(piece) == -1) {
 			this.dams.push(piece);
 		}
+<<<<<<< HEAD
+=======
+		this.next();
+>>>>>>> 87be6757b922b3c8e7cb37a458320eb0b43720f4
 	},
 
 	removeDam : function(piece){
@@ -54,6 +59,9 @@ Board.prototype = {
 
 	getDamCount : function(){
 		return this.dams.length;
+	},
+	callback: function() {
+		console.log("hi");
 	}
 };
 
@@ -79,18 +87,30 @@ Piece.prototype = {
 		this.button = new Phaser.Button(this.board.game, this.hexCoordinate.pixelCenter['x'] + horizontalOffset, 
 			this.hexCoordinate.pixelCenter['y'], 
 			this.dam ? "dam": 
+<<<<<<< HEAD
 				(Math.random() < 0.5 ? "water" : "land"), 
 			actionOnClick, this);
 		this.board.group.add(this.button);
+=======
+				(Math.random() < 0.5 ? "water" : "land")));
+		this.button.inputEnabled = true;
+		this.button.events.onInputDown.add(actionOnClick, this);
+>>>>>>> 87be6757b922b3c8e7cb37a458320eb0b43720f4
 		this.button.scale.x = this.width/this.button.width;
 		this.button.scale.y = this.height/this.button.height;
 		this.button.x -= this.button.width/2;
 		this.button.y -= this.button.height/2;
 
 		function actionOnClick(clickedButton) {
+<<<<<<< HEAD
 			this.dam = !this.dam;
 			this.dam ? this.board.placeDam(this) : this.board.removeDam(this);
 			this.drawPiece();
+=======
+		   	this.dam = !this.dam;
+		   	this.dam ? this.board.placeDam(this) : this.board.removeDam(this);
+		   	this.drawPiece();
+>>>>>>> 87be6757b922b3c8e7cb37a458320eb0b43720f4
 		}
 	},
 

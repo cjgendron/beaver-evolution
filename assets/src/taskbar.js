@@ -4,6 +4,7 @@ function Taskbar(main, group) {
 	this.group = group;
 	this.damCount = main.board.getDamCount();
 	this.createTaskbar();
+	// this.hide();
 }
 
 Taskbar.prototype = {
