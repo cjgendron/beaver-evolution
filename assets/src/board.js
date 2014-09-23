@@ -5,7 +5,7 @@ function Board(main, group) {
 	this.pieces = {};
 	this.dams = [];
 	this.numPiecesVert = 9;
-	this.pieceHeight = this.game.height/(1 + .75 * (this.numPiecesVert - 1));
+	this.pieceHeight = (this.game.height - 60)/(1 + .75 * (this.numPiecesVert - 1)); //subtract the height of the taskbar
 	this.pieceWidth = Math.sqrt(3)/2.0 * this.pieceHeight;
 	this.numPiecesHor = Math.floor((this.game.width/this.pieceWidth) - 0.5);
 	this.canPopulate = true;

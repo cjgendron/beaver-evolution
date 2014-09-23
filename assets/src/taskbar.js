@@ -33,6 +33,7 @@ Taskbar.prototype = {
 		this.group.add(this.populateButton);
 		this.group.add(this.evolveButton);
 		this.group.add(this.taskbarBack);
+		this.group.sendToBack(this.taskbarBack);
 	},
 	show: function() {
 		this.group.visible = true;
@@ -56,7 +57,7 @@ Taskbar.prototype = {
 	},
 	actionOnPopulate : function(clickedButton){
 		this.beaverCount += Math.ceil(0.25 * this.beaverCount);
-		beaverCountText.setText(this.beaverCount);
+		this.beaverCountText.setText(this.beaverCount);
 	},
 
 	actionOnEvolve : function(){
