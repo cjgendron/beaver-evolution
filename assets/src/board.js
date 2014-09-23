@@ -39,6 +39,7 @@ Board.prototype = {
 	placeDam : function(piece){
 		//piece.dam = true;
 		if(this.dams.indexOf(piece) == -1) {
+			piece.placeDam();
 			this.dams.push(piece);
 		}
 		//this.next();
@@ -47,6 +48,7 @@ Board.prototype = {
 	removeDam : function(piece){
 		//piece.dam = false;
 		this.dams.splice(this.dams.indexOf(piece), 1);
+		piece.removeDam();
 	},
 
 	drawBoard : function() {
@@ -73,7 +75,7 @@ Board.prototype = {
 		for (piece in this.dams) {
 	    	var neighbors = this.dams[piece].getNeighbors();
 		    for (neighbor in this.dams[piece].getNeighbors()){
-			    if (neighbors[neighbor].getType() != "dam"){
+			    if (!neighbors[neighbor].getDam()){
 			        neighbors[neighbor].unlockPiece();	
 			    }
 		    }
@@ -84,6 +86,10 @@ Board.prototype = {
 		for (piece in this.dams) {
 			this.dams[piece].lockPiece();
 		}
+	},
+
+	getDams: function(){
+		return this.dams;
 	}
 	
 };
@@ -91,17 +97,17 @@ Board.prototype = {
 function Piece(type, board, hexCoordinate) {
 	this.LAND;
 	this.WATER;
-	this.type = type || (Math.random() < 0.2 ? "dam" : (Math.random() < 0.5 ? "water" : "land"));
+	this.type = type || Math.random() < 0.5 ? "water" : "land";
 	this.board = board;
-	if (this.type == "dam"){
-		this.board.placeDam(this);	
-	}
 	this.game = board.game;
 	this.height = hexCoordinate.height;
 	this.width = hexCoordinate.width;
 	this.hexCoordinate = hexCoordinate;
-	this.dam = false;
+	this.dam = Math.random() < 0.2;
 	this.locked = true;
+	if (this.dam){
+		this.board.placeDam(this);	
+	}
 	this.button;
 };
 
@@ -128,7 +134,6 @@ Piece.prototype = {
 		    if (!this.locked){
 			   	this.dam = !this.dam;
 			   	this.dam ? this.board.placeDam(this) : this.board.removeDam(this);
-			   	this.drawPiece();
 		    }
 		}
 	},
@@ -166,7 +171,22 @@ Piece.prototype = {
 		}
 		return neighbors;
 
+	},
+
+	placeDam: function(){
+		this.dam = true;
+		this.drawPiece();
+	},
+
+	removeDam: function(){
+		this.dam = false;
+		this.drawPiece();
+	},
+
+	getDam: function(){
+		return this.dam;
 	}
+
 };
 
 function HexCoordinate(xHex, yHex, pieceWidth, pieceHeight) {

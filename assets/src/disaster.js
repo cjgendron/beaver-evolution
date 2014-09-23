@@ -2,9 +2,10 @@ var Disasters = function(main, group) {
 	this.main = main;
 	this.game = main.game;
 	this.group = group;
-	this.damCount = main.board.getDamCount();
-	this.beavers = main.beavers;
-	this.dams = main.board.dams;
+	this.board = main.getBoard();
+	//this.damCount = main.board.getDamCount();
+	//this.beavers = main.beavers;
+	//this.board.getDams() = main.board.dams;
 
 	var disasters = [["Poacher", "Hunters looking for beaver furs swing through, killing some number of your beavers", 0.05],
 					 ["Pollution", "The polluted waters mutate your beavers' genes. Lose one evolution trait.", 0.1],
@@ -14,7 +15,7 @@ var Disasters = function(main, group) {
 					 ["Drought", "The river runs dry, causing a chain effect that leads to starvation of half of your beavers", 0.15],
 					 ["Famine", "The shrubs and grass your beavers subsist on do not grow. Half of your population dies and repopulation is impossible for one turn", 0.1],
 					 ["Tornado", "A massive tornado whips through, destroying half of your dam and killing half of your population", 0.05]];
-	var map = ["Poacher", 
+	this.map = ["Poacher", 
 				"Pollution", "Pollution", 
 				"Lumberjack", "Lumberjack", "Lumberjack", 
 				"Forest Fire", "Forest Fire", "Forest Fire", "Forest Fire",
@@ -26,66 +27,16 @@ var Disasters = function(main, group) {
 	this.createDisasters(disasters);
 
 	function occurrence() {
-		if (getRandomInt(0,1) == 0) {
+		if (this.getRandomInt(0,1) == 0) {
 			console.log("No disaster");
 		}
 		else {
-			var random = getRandomInt(0, 19);
-			var result = map[random];
+			var random = this.getRandomInt(0, 19);
+			var result = this.map[random];
 			console.log(result);
-			consequences(result);		
+			this.consequences(result);		
 		}		
 	}
-
-	function consequences(result) {
-		switch(result) {
-			case "Drought":
-				this.beavers -= Math.floor(this.beavers / 2);
-				break;
-			case "Famine":
-				this.beavers -= Math.floor(this.beavers / 2);
-				this.board.canPopulate = false;
-				break;
-			case "Tornado":
-				this.beavers -= Math.floor(this.beavers / 2);
-				// Currently just going to destroy the first half of the dams in the array
-				var toDestroy = Math.floor(this.dams.length / 2);
-				this.dams.splice(0, toDestroy - 1);	
-				break;
-			case "Lumberjack":
-				this.board.canBuild = false;
-				// TODO: somehow lock canBuild for two turns
-				break;
-			case "Pollution":
-				// TODO: remove an evolution trait
-				break;
-			case "Poachers":
-				var random = getRandomInt(0, 9);
-				this.beavers -= random;
-				break;
-			case "Forest Fire":
-				var landDams = this.main.board.getDamsOfType("land");
-
-				// Destroying the first half of land dams that I get
-				var toDestroy = Math.floor(arr.length / 2);
-				landDams.splice(toDestroy, landDams.length);
-				for (dam in landDams) {
-					var piece = landDams[dam];
-					this.main.board.removeDam(piece);
-				}
-				break;
-			case "Flash Flood":
-				var waterDams = this.main.board.getDamsOfType("water");
-				var toDestroy = Math.floor(arr.length / 2);
-				waterDams.splice(toDestroy, waterDams.length);
-				for (dam in waterDams) {
-					var piece = waterDams[dam];
-					this.main.board.removeDam(piece);
-				}
-				break;
-		}		
-	}
-
 
 };
 
@@ -112,31 +63,38 @@ Disasters.prototype = {
 	},
 	
 	occurrence: function() {
-		if (getRandomInt(0,1) == 0) {
+		if (this.getRandomInt(0,1) == 0) {
 			console.log("No disaster");
 		}
 		else {
-			var random = getRandomInt(0, 19);
-			var result = map[random];
+			var random = this.getRandomInt(0, 19);
+			var result = this.map[random];
 			console.log(result);
-			consequences(result);		
+			this.consequences(result);		
 		}		
 	},
 
 	consequences: function(result) {
 		switch(result) {
 			case "Drought":
-				this.beavers -= Math.floor(this.beavers / 2);
+				this.main.setBeavers(Math.floor(this.main.getBeavers() / 2));
+				this.main.updateBeaverCount();
 				break;
 			case "Famine":
-				this.beavers -= Math.floor(this.beavers / 2);
+				this.main.setBeavers(Math.floor(this.main.getBeavers() / 2));
+				this.main.updateBeaverCount();
 				this.board.canPopulate = false;
 				break;
 			case "Tornado":
-				this.beavers -= Math.floor(this.beavers / 2);
+				this.main.setBeavers(Math.floor(this.main.getBeavers() / 2));
 				// Currently just going to destroy the first half of the dams in the array
-				var toDestroy = Math.floor(this.dams.length / 2);
-				this.dams.splice(0, toDestroy - 1);	
+				var dams = this.board.getDams();
+				var toDestroy = Math.floor(dams.length/ 2);
+				for (var dam = 0; dam < toDestroy; dam++){
+					this.board.removeDam(dams[dam]);	
+				}
+				this.main.updateBeaverCount();
+				this.main.updateDamCount();
 				break;
 			case "Lumberjack":
 				this.board.canBuild = false;
@@ -146,28 +104,31 @@ Disasters.prototype = {
 				// TODO: remove an evolution trait
 				break;
 			case "Poachers":
-				var random = getRandomInt(0, 9);
-				this.beavers -= random;
+				var random = this.getRandomInt(0, 9);
+				this.main.setBeavers(this.main.getBeavers() -random);
+				this.main.updateBeaverCount();
 				break;
 			case "Forest Fire":
-				var landDams = this.main.board.getDamsOfType("land");
+				var landDams = this.board.getDamsOfType("land");
 
 				// Destroying the first half of land dams that I get
-				var toDestroy = Math.floor(arr.length / 2);
+				var toDestroy = Math.floor(landDams.length / 2);
 				landDams.splice(toDestroy, landDams.length);
 				for (dam in landDams) {
 					var piece = landDams[dam];
-					this.main.board.removeDam(piece);
+					this.board.removeDam(piece);
 				}
+				this.main.updateDamCount();
 				break;
 			case "Flash Flood":
-				var waterDams = this.main.board.getDamsOfType("water");
-				var toDestroy = Math.floor(arr.length / 2);
+				var waterDams = this.board.getDamsOfType("water");
+				var toDestroy = Math.floor(waterDams.length / 2);
 				waterDams.splice(toDestroy, waterDams.length);
 				for (dam in waterDams) {
 					var piece = waterDams[dam];
-					this.main.board.removeDam(piece);
+					this.board.removeDam(piece);
 				}
+				this.main.updateDamCount();
 				break;
 		}		
 	},

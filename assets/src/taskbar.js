@@ -2,9 +2,9 @@ function Taskbar(main, group) {
 	this.main = main;
 	this.game = main.game;
 	this.group = group;
-	this.damCount = main.getBoard().getDamCount();
+	this.damCount = this.getDamCount();
 	//this.damCount = 1;
-	this.beaverCount = main.getBeavers();
+	//this.beaverCount = main.getBeavers();
 	this.state;
 	this.createTaskbar();
 	// this.hide();
@@ -18,7 +18,7 @@ Taskbar.prototype = {
 		this.taskbarBack = this.game.add.image(0,540,'taskbarBack');
 		this.beaverImage = new Phaser.Image(this.game, 100, 550, 'beaverImage');
 		this.beaverImage.scale.setTo(0.1,0.1);
-		this.beaverCountText = this.game.add.text(150, 550, this.beaverCount, {fill: "#ff0044"});
+		this.beaverCountText = this.game.add.text(150, 550, this.getBeaverCount(), {fill: "#ff0044"});
 		this.damImage = this.game.add.image(250, 550, 'dam');
 		this.damImage.scale.setTo(0.2,0.2);
 		this.damCountText = this.game.add.text(300, 550, this.damCount, { fill: "#ff0044"});
@@ -47,7 +47,7 @@ Taskbar.prototype = {
 			this.state = "building";
 			this.main.getBoard().unlockForBuilding();
 		}
-		else if (this.main.getBoard().getDamCount() <= this.damCount + Math.ceil(0.5 * this.beaverCount) 
+		else if (this.main.getBoard().getDamCount() <= this.damCount + Math.ceil(0.5 * this.getBeaverCount()) 
 			&& this.main.getBoard().getDamCount() - this.damCount !=0){
 			this.updateDamCount();
 			this.main.getBoard().lockAllPieces();
@@ -56,17 +56,32 @@ Taskbar.prototype = {
 		
 	},
 	actionOnPopulate : function(clickedButton){
-		this.beaverCount += Math.ceil(0.25 * this.beaverCount);
-		this.beaverCountText.setText(this.beaverCount);
+		this.main.setBeavers(this.getBeaverCount() + Math.ceil(0.25 * this.getBeaverCount()));
+		this.updateBeaverCount();
 	},
 
 	actionOnEvolve : function(){
 		// this.game.switchState(gameObject.evolutionCard)
 	},
 
+	getDamCount: function(){
+		return this.main.getBoard().getDamCount();
+	},
+
 	updateDamCount: function(){
-		this.damCount = this.main.getBoard().getDamCount();
+		this.damCount = this.getDamCount();
 		this.damCountText.setText(this.damCount);
-	}
+
+	},
+
+	getBeaverCount: function(){
+		return this.main.getBeavers();
+	},
+
+	updateBeaverCount: function(){
+		this.beaverCountText.setText(this.getBeaverCount());
+	},
+
+
 
 }

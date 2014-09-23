@@ -11,6 +11,16 @@ BeaverEvolution.prototype = {
     getBeavers: function() {
         return this.beavers;
     },
+    setBeavers: function(beavers) {
+        this.beavers = beavers;
+        this.updateBeaverCount();
+    },
+    updateDamCount: function() {
+        this.getTaskbar().updateDamCount();
+    },
+    updateBeaverCount: function() {
+        this.getTaskbar().updateBeaverCount();
+    },
     getBoard: function() {
         return this.board;
     },
