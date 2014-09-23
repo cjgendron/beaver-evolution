@@ -15,6 +15,7 @@ Taskbar.prototype = {
 		return this.group;
 	},
 	createTaskbar: function() {
+		this.taskbarBack = this.game.add.image(0,540,'taskbarBack');
 		this.beaverImage = new Phaser.Image(this.game, 100, 550, 'beaverImage');
 		this.beaverImage.scale.setTo(0.1,0.1);
 		this.beaverCountText = this.game.add.text(150, 550, this.beaverCount, {fill: "#ff0044"});
@@ -31,6 +32,7 @@ Taskbar.prototype = {
 		this.group.add(this.buildButton);
 		this.group.add(this.populateButton);
 		this.group.add(this.evolveButton);
+		this.group.add(this.taskbarBack);
 	},
 	show: function() {
 		this.group.visible = true;
