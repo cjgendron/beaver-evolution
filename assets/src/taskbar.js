@@ -61,6 +61,8 @@ Taskbar.prototype = {
 	},
 
 	actionOnEvolve : function(){
+		this.main.board.hide();
+		this.main.evolutionCard.show();
 		// this.game.switchState(gameObject.evolutionCard)
 	},
 
