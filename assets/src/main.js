@@ -35,13 +35,13 @@ BeaverEvolution.prototype = {
     },
     create: function() {
         this.game.stage.backgroundColor = "#ffffff";
+        this.beavers = 8;
         boardGroup = this.game.add.group();
         evolutionCardGroup = this.game.add.group();
         taskbarGroup = this.game.add.group();
         this.board = new Board(this, boardGroup);
         this.evolutionCard = new EvolutionCard(this, evolutionCardGroup);
         this.taskbar = new Taskbar(this, taskbarGroup);
-        this.beavers = 8;
         console.log("Welcome to Beaver Evolution!");
         this.board.show();
     },
