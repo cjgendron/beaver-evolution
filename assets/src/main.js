@@ -4,6 +4,7 @@ function BeaverEvolution(game) {
     this.evolutionCard;
     this.taskbar;
     this.beavers;
+    this.disasters;
 }
 
 BeaverEvolution.prototype = {
@@ -34,10 +35,12 @@ BeaverEvolution.prototype = {
         boardGroup = this.game.add.group();
         evolutionCardGroup = this.game.add.group();
         taskbarGroup = this.game.add.group();
+        disasterGroup = this.game.add.group();
         this.board = new Board(this, boardGroup);
         this.evolutionCard = new EvolutionCard(this, evolutionCardGroup);
         this.taskbar = new Taskbar(this, taskbarGroup);
         this.beavers = 8;
+        this.disasters = new Disasters(this, disasterGroup);
         console.log("Welcome to Beaver Evolution!");
         this.board.show();
     },

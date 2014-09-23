@@ -8,14 +8,14 @@ var EvolutionCard = function(main, group) {
                 new Trait(1, "Only 50% population lost on poachers", false),
                 new Trait(2, "Only 50% loss on flood", false)
             ]),
-        Category("Craftsmanship", 0, [
+        Category("Resolve", 0, [
                 new Trait(0, "Lumberjack only affects for one turn", false),
                 new Trait(1, "Only 25% loss on tornado", false),
                 new Trait(2, "Can increase population by 50% when populating", false)
             ]),
-        Category("Craftsmanship", 0, [
+        Category("Intelligence", 0, [
                 new Trait(0, "No population loss for famine", false),
-                new Trait(1, "Only 25% loss on draught", false),
+                new Trait(1, "Only 25% loss on drought", false),
                 new Trait(2, "Only 50% dam loss on fire", false)
             ]),
     ];
