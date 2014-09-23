@@ -9,6 +9,8 @@
         <script src="assets/src/taskbar.js"></script>
         <script src="assets/src/disaster.js"></script>
         <script src="assets/src/main.js"></script>
+        <script src="assets/src/homeStage.js"></script>
+        <script src="assets/src/endStage.js"></script>
     </head>
     <body>
         Welcome to Beaver Evolution!
@@ -19,8 +21,13 @@
     window.onload = function() {
         var game = new Phaser.Game(800, 600, Phaser.AUTO, '', null);
         var main = new BeaverEvolution(game);
+        var endStage = new EndStage(game);
+        var homeStage = new HomeStage(game);
         game.state.add('main', main, false);
-        game.state.start('main');
+        game.state.add('home', homeStage, false);
+        game.state.add('end', endStage, false);
+
+        game.state.start('home');
     };
 
     </script>
