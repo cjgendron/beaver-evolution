@@ -21,6 +21,7 @@ BeaverEvolution.prototype = {
         return this.evolutionCard;
     },
     preload: function() {
+        this.game.load.image('taskbarBack',"/assets/images/taskbarBack.png");
         this.game.load.image('beaverImage',"/assets/images/beaver.png");
         this.game.load.image('buildButton', "/assets/images/build.png");
         this.game.load.image('populateButton', "/assets/images/populate.png");
