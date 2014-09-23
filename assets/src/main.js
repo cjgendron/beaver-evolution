@@ -21,6 +21,10 @@ BeaverEvolution.prototype = {
         return this.evolutionCard;
     },
     preload: function() {
+        this.game.load.image('beaverImage',"/assets/images/beaver.png");
+        this.game.load.image('buildButton', "/assets/images/build.png");
+        this.game.load.image('populateButton', "/assets/images/populate.png");
+        this.game.load.image('evolveButton', "/assets/images/evolve.png");
         this.game.load.image("test_image", "../assets/images/phaser.png");
         this.game.load.image("green", "../assets/images/green.png");
         this.game.load.image("green_brown", "../assets/images/green_brown.png");
@@ -32,6 +36,7 @@ BeaverEvolution.prototype = {
     },
     create: function() {
         this.game.stage.backgroundColor = "#ffffff";
+        this.beavers = 8;
         boardGroup = this.game.add.group();
         evolutionCardGroup = this.game.add.group();
         taskbarGroup = this.game.add.group();
@@ -39,7 +44,6 @@ BeaverEvolution.prototype = {
         this.board = new Board(this, boardGroup);
         this.evolutionCard = new EvolutionCard(this, evolutionCardGroup);
         this.taskbar = new Taskbar(this, taskbarGroup);
-        this.beavers = 8;
         this.disasters = new Disasters(this, disasterGroup);
         console.log("Welcome to Beaver Evolution!");
         this.board.show();
