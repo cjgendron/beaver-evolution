@@ -29,7 +29,7 @@ var Disasters = function(main, group) {
 
 Disasters.prototype = {
 	createDisasters: function() {
-		selectDisaster = game.add.button(400, 15, 'select', occurrence, this);
+		selectDisaster = this.game.add.button(400, 15, 'select', occurrence, this);
 		for (var index = 0; index < disasters.length; index++) {
 			var disaster = game.add.text(50, (index * 70) + 50, disasters[index][0], { fill: "white" });
 			var description = game.add.text(100, (index * 70) + 80, disasters[index][1], { fill: "white", font: "16px Arial", wordWrap: true, wordWrapWidth: 700 });
