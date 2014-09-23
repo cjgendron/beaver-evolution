@@ -12,13 +12,14 @@ Taskbar.prototype = {
 		return this.group;
 	},
 	createTaskbar: function() {
-		beaverImage = new Phaser.Image(this.game, 100, 500, 'beaverImage');
-		beaverCountText = this.game.add.text(150, 500, 'numBeavers', {fill: "#ff0044"});
-		damImage = this.game.add.image(200, 500, 'damImage');
-		damCountText = this.game.add.text(250, 500, this.damCount, { fill: "#ff0044"});
-		buildButton = this.game.add.button(500, 500, 'build', this.actionOnBuild, this);
-		populateButton = this.game.add.button(600, 500, 'populate', this.actionOnPopulate, this);
-		evolveButton = this.game.add.button(700, 500, 'evolve', this.actionOnEvolve, this);
+		beaverImage = new Phaser.Image(this.game, 100, 550, 'beaverImage');
+		beaverImage.scale.setTo(0.1,0.1);
+		beaverCountText = this.game.add.text(150, 550, 'numBeavers', {fill: "#ff0044"});
+		damImage = this.game.add.image(250, 550, 'damImage');
+		damCountText = this.game.add.text(300, 550, this.damCount, { fill: "#ff0044"});
+		buildButton = this.game.add.button(400, 550, 'buildButton', this.actionOnBuild, this);
+		populateButton = this.game.add.button(500, 550, 'populateButton', this.actionOnPopulate, this);
+		evolveButton = this.game.add.button(650, 550, 'evolveButton', this.actionOnEvolve, this);
 		this.group.add(beaverImage);
 		this.group.add(beaverCountText);
 		this.group.add(damImage);
