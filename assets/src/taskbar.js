@@ -2,7 +2,8 @@ function Taskbar(main, group) {
 	this.main = main;
 	this.game = main.game;
 	this.group = group;
-	this.damCount = main.board.getDamCount();
+	// this.damCount = main.board.getDamCount();
+	this.damCount = 1;
 	this.createTaskbar();
 	// this.hide();
 }
@@ -14,7 +15,7 @@ Taskbar.prototype = {
 	createTaskbar: function() {
 		beaverImage = new Phaser.Image(this.game, 100, 550, 'beaverImage');
 		beaverImage.scale.setTo(0.1,0.1);
-		beaverCountText = this.game.add.text(150, 550, 'numBeavers', {fill: "#ff0044"});
+		beaverCountText = this.game.add.text(150, 550, 'num', {fill: "#ff0044"});
 		damImage = this.game.add.image(250, 550, 'damImage');
 		damCountText = this.game.add.text(300, 550, this.damCount, { fill: "#ff0044"});
 		buildButton = this.game.add.button(400, 550, 'buildButton', this.actionOnBuild, this);
@@ -34,10 +35,10 @@ Taskbar.prototype = {
 	hide: function() {
 		this.group.visible = false;
 	},
-	actionOnBuild : function(){
+	actionOnBuild : function(clickedButton){
 		this.damCount += 1;
 		console.log(this.damCount);
-		this.damCountText.setText(this.damCount);
+		this.damCountText.setText("this.damCount");
 	},
 	actionOnPopulate : function(){
 		// numBeavers = Math.ceil(0.25 * board.numBeavers);
