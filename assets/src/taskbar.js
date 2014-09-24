@@ -103,9 +103,15 @@ Taskbar.prototype = {
 			if (this.main.getEvolutionCard().getTrait(2, 1)) {
 				pct = 0.5;
 			}
-			this.main.setBeavers(this.getBeaverCount() + Math.ceil(pct * this.getBeaverCount()));
-			this.updateBeaverCount();
-			this.getDisaster();
+			var newBeaverCount = Math.min(this.getBeaverCount() + Math.ceil(pct * this.getBeaverCount()), this.damCount);
+			if (newBeaverCount > this.getBeaverCount()){
+				this.main.setBeavers(newBeaverCount);
+				this.updateBeaverCount();
+				this.getDisaster();
+			}
+			else {
+				this.instructions.setText("You cannot populate this turn because you need more dams.");
+			}
 		}
 		else {
 			this.instructions.setText("You cannot populate this turn due to Famine.");
