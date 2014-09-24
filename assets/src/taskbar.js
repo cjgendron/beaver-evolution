@@ -4,10 +4,9 @@ function Taskbar(main, group) {
 	this.group = group;
 	this.damCount = this.getDamCount();
 	//this.damCount = 1;
-	//this.beaverCount = main.getBeavers();
+	// this.beaverCount = main.getBeavers();
 	this.state;
 	this.createTaskbar();
-	// this.hide();
 }
 
 Taskbar.prototype = {
@@ -43,17 +42,16 @@ Taskbar.prototype = {
 		this.group.visible = false;
 	},
 	actionOnInfo : function(clickedButton){
-		if(this.main.getDisasterInfo().group.visible){
-			this.main.getBoard().show();
-			this.main.getDisasterInfo().hide();
-		}
-		else{
-			this.main.getBoard().hide();
-			this.main.getDisasterInfo().show();
-		}
+		this.state = "info";
+		this.main.getBoard().hide();
+		this.main.getEvolutionCard().hide();
+		this.main.getDisasterInfo().show();
 	},
 	actionOnBuild : function(clickedButton){
 		// TODO: need to add a screen to tell them how many they can build, different art for dams that havent been locked in yet
+		this.main.getBoard().show();
+		this.main.getEvolutionCard().hide();
+		this.main.getDisasterInfo().hide();
 		if (this.state != "building"){
 			this.state = "building";
 			this.main.getBoard().unlockForBuilding();
@@ -63,8 +61,6 @@ Taskbar.prototype = {
 			this.updateDamCount();
 			this.main.getBoard().lockAllPieces();
 		}
-		
-		
 	},
 	actionOnPopulate : function(clickedButton){
 		this.main.setBeavers(this.getBeaverCount() + Math.ceil(0.25 * this.getBeaverCount()));
@@ -73,6 +69,7 @@ Taskbar.prototype = {
 
 	actionOnEvolve : function(){
 		this.main.board.hide();
+		this.main.getDisasterInfo().hide();
 		this.main.evolutionCard.show();
 	},
 
@@ -83,7 +80,7 @@ Taskbar.prototype = {
 	updateDamCount: function(){
 		this.damCount = this.getDamCount();
 		this.damCountText.setText(this.damCount);
-
+		this.checkEndConditions();
 	},
 
 	getBeaverCount: function(){
@@ -92,8 +89,16 @@ Taskbar.prototype = {
 
 	updateBeaverCount: function(){
 		this.beaverCountText.setText(this.getBeaverCount());
+		this.checkEndConditions();
 	},
 
+	checkEndConditions: function() {
+		if (this.damCount >= 40 || this.getBeaverCount() >= 30) {
+			this.game.state.start('win');
+		} else if (this.damCount <= 0 || this.getBeaverCount() <= 0) {
+			this.game.state.start('end');
+		}
+	}
 
 
 }

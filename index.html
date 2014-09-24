@@ -11,6 +11,7 @@
         <script src="assets/src/main.js"></script>
         <script src="assets/src/homeStage.js"></script>
         <script src="assets/src/endStage.js"></script>
+        <script src="assets/src/gameOverWin.js"></script>
         <link rel="stylesheet" type="text/css" href="assets/style.css">
     </head>
     <body>
@@ -26,9 +27,11 @@
         var main = new BeaverEvolution(game);
         var endStage = new EndStage(game);
         var homeStage = new HomeStage(game);
+        var gameOverWin = new GameOverWin(game);
         game.state.add('main', main, false);
         game.state.add('home', homeStage, false);
         game.state.add('end', endStage, false);
+        game.state.add('win', gameOverWin, false);
 
         game.state.start('home');
     };

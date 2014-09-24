@@ -10,8 +10,6 @@ function Board(main, group) {
 	this.numPiecesHor = Math.floor((this.game.width/this.pieceWidth) - 0.5);
 	this.canPopulate = true;
 	this.canBuild = true;
-	this.createBoard();
-	this.drawBoard();
 };
 
 Board.prototype = {
@@ -26,6 +24,10 @@ Board.prototype = {
 			}
 		}
 	},
+	init: function() {
+		this.createBoard();
+		this.drawBoard();
+	},
 	show: function() {
 		this.group.visible = true;
 	},
@@ -37,16 +39,15 @@ Board.prototype = {
 		this.main.evolutionCard.show();
 	},
 	placeDam : function(piece){
-		//piece.dam = true;
 		if(this.dams.indexOf(piece) == -1) {
 			piece.placeDam();
 			this.dams.push(piece);
 		}
-		//this.next();
+		taskbar = this.main.getTaskbar();
+		taskbar.updateDamCount();
 	},
 
 	removeDam : function(piece){
-		//piece.dam = false;
 		this.dams.splice(this.dams.indexOf(piece), 1);
 		piece.removeDam();
 	},
@@ -64,7 +65,7 @@ Board.prototype = {
 	getDamsOfType: function(type) {
 		var damsOfType = [];
 		for (piece in this.dams) {
-			if (this.dams[piece].type == "land") {
+			if (this.dams[piece].type == type) {
 				damsOfType.push(this.dams[piece]);
 			}
 		}
