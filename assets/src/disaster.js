@@ -76,19 +76,30 @@ Disasters.prototype = {
 	consequences: function(result) {
 		switch(result) {
 			case "Drought":
-				this.main.setBeavers(Math.floor(this.main.getBeavers() / 2));
+				var pct = 0.5;
+				if (this.main.getEvolutionCard().getTrait(1,2)) {
+					pct = 0.75;
+				}
+				this.main.setBeavers(Math.floor(this.main.getBeavers() * pct));
 				this.main.updateBeaverCount();
 				break;
 			case "Famine":
-				this.main.setBeavers(Math.floor(this.main.getBeavers() / 2));
-				this.main.updateBeaverCount();
+				if (!this.main.getEvolutionCard().getTrait(0,2)) {
+					this.main.setBeavers(Math.floor(this.main.getBeavers() / 2));
+					this.main.updateBeaverCount();
+				}
 				this.board.canPopulate = false;
 				break;
 			case "Tornado":
-				this.main.setBeavers(Math.floor(this.main.getBeavers() / 2));
+				var pct = 0.5;
+				if (this.main.getEvolutionCard().getTrait(1,1)) {
+					pct = 0.25;
+				}
+				this.main.setBeavers(Math.floor(this.main.getBeavers() * (1-pct)));
+				this.main.updateBeaverCount();
 				// Currently just going to destroy the first half of the dams in the array
 				var dams = this.board.getDams();
-				var toDestroy = Math.floor(dams.length/ 2);
+				var toDestroy = Math.floor(dams.length * pct);
 				for (var dam = 0; dam < toDestroy; dam++){
 					this.board.removeDam(dams[dam]);	
 				}
@@ -104,14 +115,21 @@ Disasters.prototype = {
 				break;
 			case "Poachers":
 				var random = this.getRandomInt(0, 9);
-				this.main.setBeavers(this.main.getBeavers() -random);
+				if (this.main.getEvolutionCard().getTrait(1,0)) {
+					random *= 0.5;
+				}
+				this.main.setBeavers(this.main.getBeavers() - random);
 				this.main.updateBeaverCount();
 				break;
 			case "Forest Fire":
+				var pct = 1;
+				if (this.main.getEvolutionCard().getTrait(2,0)) {
+					pct = 0.5;
+				}
 				var landDams = this.board.getDamsOfType("land");
 
 				// Destroying the first half of land dams that I get
-				var toDestroy = Math.floor(landDams.length / 2);
+				var toDestroy = Math.floor(landDams.length * pct);
 				landDams.splice(toDestroy, landDams.length);
 				for (dam in landDams) {
 					var piece = landDams[dam];
@@ -120,8 +138,12 @@ Disasters.prototype = {
 				this.main.updateDamCount();
 				break;
 			case "Flash Flood":
+				var pct = 1;
+				if (this.main.getEvolutionCard().getTrait(2,0)) {
+					pct = 0.5;
+				}
 				var waterDams = this.board.getDamsOfType("water");
-				var toDestroy = Math.floor(waterDams.length / 2);
+				var toDestroy = Math.floor(waterDams.length * pct);
 				waterDams.splice(toDestroy, waterDams.length);
 				for (dam in waterDams) {
 					var piece = waterDams[dam];

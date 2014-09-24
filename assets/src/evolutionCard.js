@@ -123,7 +123,6 @@ var Trait = function(stage, description) {
                     this.button.events.onInputDown.add(evolve, this);
                     this.category.evolve();
                     this.category.traits[this.category.getHighestStage()].unlock();
-                    this.main.getDisasterInfo().occurrence();
                     this.main.getTaskbar().getDisaster();
                     this.evolutionCard.next();
                 }
