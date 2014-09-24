@@ -36,6 +36,7 @@ BeaverEvolution.prototype = {
         this.game.load.image('buildButton', "/assets/images/build.png");
         this.game.load.image('populateButton', "/assets/images/populate.png");
         this.game.load.image('evolveButton', "/assets/images/evolve.png");
+        this.game.load.image('helpButton', "/assets/images/help.png");
         this.game.load.image("test_image", "../assets/images/phaser.png");
         this.game.load.image("green", "../assets/images/green.png");
         this.game.load.image("green_brown", "../assets/images/green_brown.png");

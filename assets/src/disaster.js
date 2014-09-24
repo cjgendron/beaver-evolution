@@ -42,11 +42,12 @@ var Disasters = function(main, group) {
 
 Disasters.prototype = {
 	createDisasters: function(disasters) {
-		selectDisaster = this.game.group.button(400, 15, 'select', this.occurrence, this);
+		// selectDisaster = this.game.group.button(400, 15, 'select', this.occurrence, this);
+		this.hide();
 		for (var index = 0; index < disasters.length; index++) {
-			var disaster = this.group.add.text(50, (index * 70) + 50, disasters[index][0], { fill: "white" });
-			var description = this.group.add.text(100, (index * 70) + 80, disasters[index][1], { fill: "white", font: "12px Arial", wordWrap: true, wordWrapWidth: 700 });
-			var probability = this.group.add.text(400, (index * 70) + 50, disasters[index][2], { fill: "white" });
+			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disasters[index][0], { fill: "black", font: "16px Arial" }));
+			this.group.add(new Phaser.Text(this.game, 100, (index * 50) + 70, disasters[index][1], { fill: "black", font: "12px Arial", wordWrap: true, wordWrapWidth: 700 }));
+			this.group.add(new Phaser.Text(this.game, 400, (index * 50) + 50, disasters[index][2], { fill: "black", font: "12px Arial" }));
 		}
 	},
 

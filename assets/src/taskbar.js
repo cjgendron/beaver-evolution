@@ -16,15 +16,16 @@ Taskbar.prototype = {
 	},
 	createTaskbar: function() {
 		this.taskbarBack = this.game.add.image(0,540,'taskbarBack');
-		this.beaverImage = new Phaser.Image(this.game, 100, 550, 'beaverImage');
+		this.beaverImage = new Phaser.Image(this.game, 150, 550, 'beaverImage');
 		this.beaverImage.scale.setTo(0.1,0.1);
-		this.beaverCountText = this.game.add.text(150, 550, this.getBeaverCount(), {fill: "#ff0044"});
+		this.beaverCountText = this.game.add.text(200, 550, this.getBeaverCount(), {fill: "#ff0044"});
 		this.damImage = this.game.add.image(250, 550, 'dam');
 		this.damImage.scale.setTo(0.2,0.2);
 		this.damCountText = this.game.add.text(300, 550, this.damCount, { fill: "#ff0044"});
 		this.buildButton = this.game.add.button(400, 550, 'buildButton', this.actionOnBuild, this);
 		this.populateButton = this.game.add.button(500, 550, 'populateButton', this.actionOnPopulate, this);
 		this.evolveButton = this.game.add.button(650, 550, 'evolveButton', this.actionOnEvolve, this);
+		this.buildButton = this.game.add.button(25, 550, 'helpButton', this.actionOnHelp, this);
 		this.group.add(this.beaverImage);
 		this.group.add(this.beaverCountText);
 		this.group.add(this.damImage);
@@ -40,6 +41,11 @@ Taskbar.prototype = {
 	},
 	hide: function() {
 		this.group.visible = false;
+	},
+	actionOnHelp : function(clickedButton) {
+		// TODO: manage toggling
+		this.main.board.hide();
+		this.main.disasters.show();
 	},
 	actionOnBuild : function(clickedButton){
 		// TODO: need to add a screen to tell them how many they can build, different art for dams that havent been locked in yet
@@ -63,7 +69,6 @@ Taskbar.prototype = {
 	actionOnEvolve : function(){
 		this.main.board.hide();
 		this.main.evolutionCard.show();
-		// this.game.switchState(gameObject.evolutionCard)
 	},
 
 	getDamCount: function(){
