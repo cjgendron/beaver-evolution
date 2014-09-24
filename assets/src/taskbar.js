@@ -35,9 +35,8 @@ Taskbar.prototype = {
 		this.group.add(this.populateButton);
 		this.group.add(this.evolveButton);
 		this.group.add(this.taskbarBack);
-		this.instructions = new Phaser.Text(this.game, 25, 25, "Choose to build, populate, or evolve.",
+		this.instructions = new Phaser.Text(this.game, 25, 25, "Let's get started! Choose to build, populate, or evolve.",
 			{ font: "20px Arial", fill: "#76ff03", align: "center", });
-		// this.instructions.shadowColor("#ffffff");
 		this.group.add(this.instructions);
 		this.group.sendToBack(this.taskbarBack);
 	},
@@ -141,7 +140,7 @@ Taskbar.prototype = {
 	checkEndConditions: function() {
 		if (this.damCount >= 40 || this.getBeaverCount() >= 30) {
 			this.game.state.start('win');
-		} else if (this.damCount <= 0 || this.getBeaverCount() <= 0) {
+		} else if (this.damCount <= 0 || this.getBeaverCount() <= 2) {
 			this.game.state.start('end');
 		}
 	},
