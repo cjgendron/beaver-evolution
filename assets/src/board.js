@@ -178,7 +178,7 @@ Piece.prototype = {
 
 		this.button = this.board.group.add(new Phaser.Button(this.board.game, this.hexCoordinate.pixelCenter['x'] + horizontalOffset, 
 			this.hexCoordinate.pixelCenter['y'], 
-			this.dam ? "dam_"+this.type : this.type));
+			this.locked ? (this.dam ? "dam_"+this.type : this.type) : (this.dam ? "dam" : this.type)));
 		this.button.inputEnabled = true;
 		this.button.events.onInputDown.add(actionOnClick, this);
 		this.button.scale.x = this.width/this.button.width;
@@ -209,6 +209,7 @@ Piece.prototype = {
 
 	lockPiece: function(){
 	    this.locked = true;
+	    this.drawPiece();
 	},
 
 	unlockPiece: function(){
