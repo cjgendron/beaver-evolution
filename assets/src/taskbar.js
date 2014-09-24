@@ -147,7 +147,7 @@ Taskbar.prototype = {
 	},
 
 	checkEndConditions: function() {
-		if (this.damCount >= 40 || this.getBeaverCount() >= 30) {
+		if (this.damCount >= 40 || this.getBeaverCount() >= 30 || this.main.getEvolutionCard().getEvolvedTraits() >= 9) {
 			this.game.state.start('win');
 		} else if (this.damCount <= 0 || this.getBeaverCount() <= 2) {
 			this.game.state.start('end');

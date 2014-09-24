@@ -53,6 +53,17 @@ EvolutionCard.prototype = {
     devolveTrait: function(category, trait) {
         return this.card[category].traits[trait].devolveTrait();
     },
+    getEvolvedTraits: function(){
+        var numTraits = 0;
+        for (var trait = 0; trait <= 2; trait++){
+            for (var category = 0; category <= 2; category++){
+                if (this.main.getEvolutionCard().getTrait(category,trait)) {
+                    numTraits++;
+                }
+            }
+        }
+        return numTraits;
+    },
     show: function() {
         this.game.stage.backgroundColor = "#ffffff";
         this.group.visible = true;
@@ -64,6 +75,7 @@ EvolutionCard.prototype = {
         this.hide();
         this.main.board.show();
     }
+
 }
 
 var Category = function(name, highestStage, traits) {
