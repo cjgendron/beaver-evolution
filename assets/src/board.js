@@ -43,7 +43,7 @@ Board.prototype = {
 			piece.placeDam();
 			this.dams.push(piece);
 		}
-		//unlock the adjacent dams now for placing
+		//unlock the adjacent pieces now for placing dams
 		var neighbors = piece.getNeighbors();
 		for (neighbor in neighbors){
 		    if (!neighbors[neighbor].getDam()){
@@ -56,7 +56,7 @@ Board.prototype = {
 	removeDam : function(piece){
 		this.dams.splice(this.dams.indexOf(piece), 1);
 		piece.removeDam();
-		//lock the adjacent dams now for placing
+		//lock the adjacent pieces now for placing dams
 		var neighbors = piece.getNeighbors();
 		for (neighbor in neighbors){
 		    if (!neighbors[neighbor].getDam()){
@@ -178,7 +178,7 @@ Piece.prototype = {
 
 		this.button = this.board.group.add(new Phaser.Button(this.board.game, this.hexCoordinate.pixelCenter['x'] + horizontalOffset, 
 			this.hexCoordinate.pixelCenter['y'], 
-			this.dam ? "dam": this.type));
+			this.dam ? "dam_"+this.type : this.type));
 		this.button.inputEnabled = true;
 		this.button.events.onInputDown.add(actionOnClick, this);
 		this.button.scale.x = this.width/this.button.width;

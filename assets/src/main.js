@@ -47,6 +47,8 @@ BeaverEvolution.prototype = {
         this.game.load.image("land", "/assets/images/land.png", 42, 48);
         this.game.load.image("water", "/assets/images/water.png", 42, 48);
         this.game.load.image("dam", "/assets/images/dam.png", 42, 48);
+        this.game.load.image("dam_land", "/assets/images/dam_land.png", 42, 48);
+        this.game.load.image("dam_water", "/assets/images/dam_water.png", 42, 48);
         this.game.load.image('checkbox_no', '../assets/images/checkbox_no.png', 40, 40);
         this.game.load.image('checkbox_yes', '../assets/images/checkbox_yes.png', 40, 40);
     },
