@@ -68,10 +68,14 @@ Taskbar.prototype = {
 		this.main.getBoard().show();
 		this.main.getEvolutionCard().hide();
 		this.main.getDisasterInfo().hide();
+		var extraDams = Math.ceil(0.5 * this.getBeaverCount());
+		if (this.main.getEvolutionCard().getTrait(0,0)){
+			extraDams +=2;
+		}
+		this.damsToBuild = extraDams;
 		if (this.state != "building"){
 			if (this.main.getBoard().unlockForBuilding()){
 				this.state = "building";
-				this.damsToBuild = Math.ceil(0.5 * this.getBeaverCount());
 				this.setBuildText(this.damsToBuild);
 				this.instructions.setText("Time to build! Place your dams in any cells adjacent to current dams. Click \"Build\" again when you are done.");
 			}
@@ -79,7 +83,7 @@ Taskbar.prototype = {
 				this.instructions.setText("You cannot build this turn due to Lumberjack.");
 			}
 		}
-		else if (this.main.getBoard().getDamCount() <= this.damCount + Math.ceil(0.5 * this.getBeaverCount()) 
+		else if (this.main.getBoard().getDamCount() <= this.damCount + extraDams 
 			&& this.main.getBoard().getDamCount() - this.damCount !=0){
 			this.updateDamCount();
 			this.main.getBoard().lockAllPieces();
