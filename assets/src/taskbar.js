@@ -35,8 +35,8 @@ Taskbar.prototype = {
 		this.group.add(this.populateButton);
 		this.group.add(this.evolveButton);
 		this.group.add(this.taskbarBack);
-		this.instructions = new Phaser.Text(this.game, 25, 25, "Let's get started! Choose to build, populate, or evolve.",
-			{ font: "20px Arial", fill: "#76ff03", align: "center", });
+		this.instructions = new Phaser.Text(this.game, 0, 490, "Let's get started! Choose to build, populate, or evolve.",
+			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:800});
 		this.group.add(this.instructions);
 		this.group.sendToBack(this.taskbarBack);
 	},
@@ -73,7 +73,7 @@ Taskbar.prototype = {
 			this.main.getBoard().unlockForBuilding();
 			this.damsToBuild = Math.ceil(0.5 * this.getBeaverCount());
 			this.setBuildText(this.damsToBuild);
-			this.instructions.setText("Time to build! Place your dams in any cells adjacent to current dams.");
+			this.instructions.setText("Time to build! Place your dams in any cells adjacent to current dams. Click \"Build\" again when you are done.");
 		}
 		else if (this.main.getBoard().getDamCount() <= this.damCount + Math.ceil(0.5 * this.getBeaverCount()) 
 			&& this.main.getBoard().getDamCount() - this.damCount !=0){
@@ -154,7 +154,6 @@ Taskbar.prototype = {
 		this.setBuildText(this.damsToBuild);
 		if (this.damsToBuild === 0) {
 			this.checkEndConditions();
-			this.getDisaster();
 		}
 	},
 
