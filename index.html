@@ -11,15 +11,18 @@
         <script src="assets/src/main.js"></script>
         <script src="assets/src/homeStage.js"></script>
         <script src="assets/src/endStage.js"></script>
+        <link rel="stylesheet" type="text/css" href="assets/style.css">
     </head>
     <body>
-        Welcome to Beaver Evolution!
-        <br><br>
+        <h1>Beaver Evolution</h1>
+        <div id="game"></div>
+        <h3>Cathleen, Jordan, Kevin Wen, Kevin Wang, Justin, Rachel</h3>
+        <h2>6.073/CMS.611 Project 2</h2>
 
     <script type="text/javascript">
 
     window.onload = function() {
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', null);
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', null);
         var main = new BeaverEvolution(game);
         var endStage = new EndStage(game);
         var homeStage = new HomeStage(game);
