@@ -43,13 +43,28 @@ Board.prototype = {
 			piece.placeDam();
 			this.dams.push(piece);
 		}
-		//this.main.getTaskbar().updateDamCount();
+		//unlock the adjacent dams now for placing
+		var neighbors = piece.getNeighbors();
+		for (neighbor in neighbors){
+		    if (!neighbors[neighbor].getDam()){
+		        neighbors[neighbor].unlockPiece();	
+		    }
+	    }
+
 	},
 
 	removeDam : function(piece){
 		this.dams.splice(this.dams.indexOf(piece), 1);
 		piece.removeDam();
-		//this.main.getTaskbar().updateDamCount();
+		//lock the adjacent dams now for placing
+		var neighbors = piece.getNeighbors();
+		for (neighbor in neighbors){
+		    if (!neighbors[neighbor].getDam()){
+		        neighbors[neighbor].lockPiece();	
+		    }
+	    }
+	    // reunlock whole board due to overlap
+	    this.unlockForBuilding();
 	},
 
 	drawBoard : function() {
