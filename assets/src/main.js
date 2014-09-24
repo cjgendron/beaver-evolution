@@ -51,6 +51,13 @@ BeaverEvolution.prototype = {
         this.game.load.image("dam_water", "/assets/images/dam_water.png", 42, 48);
         this.game.load.image('checkbox_no', '../assets/images/checkbox_no.png', 40, 40);
         this.game.load.image('checkbox_yes', '../assets/images/checkbox_yes.png', 40, 40);
+
+        this.game.load.audio('tornado',"/assets/sound/tornado.aif");
+        this.game.load.audio('fire',"/assets/sound/fire.wav");
+        this.game.load.audio('rain',"/assets/sound/rain.wav");
+        this.game.load.audio('lumberjack',"/assets/sound/lumberjack.wav");
+        this.game.load.audio('pollution',"/assets/sound/pollution.wav");
+        this.game.load.audio('poacher',"/assets/sound/poacher.wav");
     },
     create: function() {
         this.game.stage.backgroundColor = "#ffffff";
