@@ -3,7 +3,8 @@ function Taskbar(main, group) {
 	this.game = main.game;
 	this.group = group;
 	this.damCount = this.getDamCount();
-	this.state;
+	this.damsToBuild;
+	this.state = "view";
 	this.createTaskbar();
 }
 
@@ -19,6 +20,7 @@ Taskbar.prototype = {
 		this.damImage = this.game.add.image(150, 550, 'dam');
 		this.damImage.scale.setTo(0.2,0.2);
 		this.damCountText = this.game.add.text(200, 550, this.damCount, { fill: "#ff0044"});
+		this.damCountToBuildText = this.game.add.text(240, 550, null, { fill: "#00ff44"});
 		this.infoButton = this.game.add.button(300, 550, 'infoButton', this.actionOnInfo, this);
 		this.buildButton = this.game.add.button(400, 550, 'buildButton', this.actionOnBuild, this);
 		this.populateButton = this.game.add.button(500, 550, 'populateButton', this.actionOnPopulate, this);
@@ -27,6 +29,7 @@ Taskbar.prototype = {
 		this.group.add(this.beaverCountText);
 		this.group.add(this.damImage);
 		this.group.add(this.damCountText);
+		this.group.add(this.damCountToBuildText);
 		this.group.add(this.buildButton);
 		this.group.add(this.populateButton);
 		this.group.add(this.evolveButton);
@@ -40,10 +43,21 @@ Taskbar.prototype = {
 		this.group.visible = false;
 	},
 	actionOnInfo : function(clickedButton){
-		this.state = "info";
-		this.main.getBoard().hide();
-		this.main.getEvolutionCard().hide();
-		this.main.getDisasterInfo().show();
+		if (this.state == "building"){
+			this.clearBuildingState();
+		}
+		if (this.state != "info") {
+			this.state = "info";
+			this.main.getBoard().hide();
+			this.main.getEvolutionCard().hide();
+			this.main.getDisasterInfo().show();
+		} 
+		else {
+			this.state = "view";
+			this.main.getBoard().show();
+			this.main.getEvolutionCard().hide();
+			this.main.getDisasterInfo().hide();
+		}
 	},
 	actionOnBuild : function(clickedButton){
 		// TODO: need to add a screen to tell them how many they can build, different art for dams that havent been locked in yet
@@ -53,14 +67,24 @@ Taskbar.prototype = {
 		if (this.state != "building"){
 			this.state = "building";
 			this.main.getBoard().unlockForBuilding();
+			this.damsToBuild = Math.ceil(0.5 * this.getBeaverCount());
+			this.setBuildText(this.damsToBuild);
 		}
 		else if (this.main.getBoard().getDamCount() <= this.damCount + Math.ceil(0.5 * this.getBeaverCount()) 
 			&& this.main.getBoard().getDamCount() - this.damCount !=0){
 			this.updateDamCount();
 			this.main.getBoard().lockAllPieces();
+			this.damsToBuild = 0;
+			this.setBuildText("");
+			this.state = "view";
+			this.main.getDisasterInfo().occurrence();
 		}
 	},
 	actionOnPopulate : function(clickedButton){
+		if (this.state == "building"){
+			this.clearBuildingState();
+		}
+		this.state = "view";
 		var pct = 0.25;
 		if (this.main.getEvolutionCard().getTrait(2, 1)) {
 			pct = 0.5;
@@ -71,9 +95,21 @@ Taskbar.prototype = {
 	},
 
 	actionOnEvolve : function(){
-		this.main.board.hide();
-		this.main.getDisasterInfo().hide();
-		this.main.evolutionCard.show();
+		if (this.state == "building"){
+			this.clearBuildingState();
+		}
+		if (this.state != "evolving") {
+			this.state = "evolving";
+			this.main.board.hide();
+			this.main.getDisasterInfo().hide();
+			this.main.evolutionCard.show();
+		} 
+		else {
+			this.state = "view";
+			this.main.board.show();
+			this.main.getDisasterInfo().hide();
+			this.main.evolutionCard.hide();
+		}
 	},
 
 	getDamCount: function(){
@@ -101,7 +137,28 @@ Taskbar.prototype = {
 		} else if (this.damCount <= 0 || this.getBeaverCount() <= 0) {
 			this.game.state.start('end');
 		}
+	},
+
+	setBuildText: function(number) {
+		this.damCountToBuildText.setText(number);
+	},
+
+	damPlaced: function() {
+		this.damsToBuild--;
+		this.setBuildText(this.damsToBuild);
+	},
+
+	damRemoved: function() {
+		this.damsToBuild++;
+		this.setBuildText(this.damsToBuild);
+	},
+
+	clearBuildingState: function(){
+		this.main.getBoard().clearAndLock();
+		this.damsToBuild = 0;
+		this.setBuildText("");
 	}
+
 
 
 }

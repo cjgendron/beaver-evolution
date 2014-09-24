@@ -58,10 +58,11 @@ BeaverEvolution.prototype = {
         taskbarGroup = this.game.add.group();
         disasterGroup = this.game.add.group();
         this.board = new Board(this, boardGroup);
+        this.board.init();
         this.evolutionCard = new EvolutionCard(this, evolutionCardGroup);
         this.taskbar = new Taskbar(this, taskbarGroup);
         this.disasters = new Disasters(this, disasterGroup);
-        this.board.init();
+        
         console.log("Welcome to Beaver Evolution!");
         this.board.show();
     },

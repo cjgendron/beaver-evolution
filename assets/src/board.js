@@ -43,15 +43,14 @@ Board.prototype = {
 			piece.placeDam();
 			this.dams.push(piece);
 		}
-		taskbar = this.main.getTaskbar();
-		taskbar.updateDamCount();
+		//this.main.getTaskbar().updateDamCount();
 	},
 
 	removeDam : function(piece){
 		this.dams.splice(this.dams.indexOf(piece), 1);
 		piece.removeDam();
-		taskbar = this.main.getTaskbar();
-		taskbar.updateDamCount();
+		//this.main.getTaskbar().updateDamCount();
+
 	},
 
 	drawBoard : function() {
@@ -77,7 +76,7 @@ Board.prototype = {
 	unlockForBuilding: function(){
 		for (piece in this.dams) {
 	    	var neighbors = this.dams[piece].getNeighbors();
-		    for (neighbor in this.dams[piece].getNeighbors()){
+		    for (neighbor in neighbors){
 			    if (!neighbors[neighbor].getDam()){
 			        neighbors[neighbor].unlockPiece();	
 			    }
@@ -86,8 +85,22 @@ Board.prototype = {
 	},
 
 	lockAllPieces: function(){
-		for (piece in this.dams) {
-			this.dams[piece].lockPiece();
+		for (piece in this.pieces) {
+			this.pieces[piece].lockPiece();
+		}
+	},
+
+	clearAndLock: function(){
+		var piecesToRemove = [];
+		for (piece in this.dams){
+			if (!this.dams[piece].locked){
+				piecesToRemove.push(this.dams[piece]);
+			}
+		}
+		for (piece in piecesToRemove){
+			piecesToRemove[piece].lockPiece();
+			this.removeDam(piecesToRemove[piece]);
+			console.log('here');
 		}
 	},
 
@@ -135,8 +148,11 @@ Piece.prototype = {
 
 		function actionOnClick(clickedButton) {
 		    if (!this.locked){
-			   	this.dam = !this.dam;
-			   	this.dam ? this.board.placeDam(this) : this.board.removeDam(this);
+		    	if ((!this.dam && this.board.main.getTaskbar().damsToBuild > 0)|| this.dam){
+				   	this.dam = !this.dam;
+				   	this.dam ? this.board.placeDam(this) : this.board.removeDam(this);
+				   	this.dam ? this.board.main.getTaskbar().damPlaced(): this.board.main.getTaskbar().damRemoved();
+		    	}
 		    }
 		}
 	},
