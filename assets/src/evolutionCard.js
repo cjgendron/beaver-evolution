@@ -50,6 +50,9 @@ EvolutionCard.prototype = {
     getTrait: function(category, trait) {
         return this.card[category].traits[trait].hasTrait();
     },
+    devolveTrait: function(category, trait) {
+        return this.card[category].traits[trait].devolveTrait();
+    },
     show: function() {
         this.game.stage.backgroundColor = "#ffffff";
         this.group.visible = true;
@@ -76,6 +79,13 @@ var Category = function(name, highestStage, traits) {
                 this.highestStage = 1;
             } else if (this.highestStage === 1) {
                 this.highestStage = 2;
+            }
+        },
+        devolve: function() {
+            if (this.highestStage === 2) {
+                this.highestStage = 1;
+            } else if (this.highestStage === 1) {
+                this.highestStage = 0;
             }
         }
     }
@@ -139,6 +149,33 @@ var Trait = function(stage, description) {
         },
         evolveTrait: function() {
             this.evolved = !this.evolved;
+        },
+        devolveTrait: function() {
+            this.evolved = false;
+            if (this.button != null) {
+                this.button.destroy();
+            }
+            this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate, this.yCoordinate, this.getTraitImage()));
+            this.button.inputEnabled = true;
+            this.button.events.onInputDown.add(evolve, this);
+            this.category.devolve();
+            this.category.traits[this.category.getHighestStage()].unlock();
+            this.evolutionCard.next();
+            function evolve() {
+                if (!this.locked) {
+                    this.evolveTrait();
+                    if (this.button != null) {
+                        this.button.destroy();
+                    }
+                    this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate, this.yCoordinate, this.getTraitImage()));
+                    this.button.inputEnabled = true;
+                    this.button.events.onInputDown.add(evolve, this);
+                    this.category.evolve();
+                    this.category.traits[this.category.getHighestStage()].unlock();
+                    this.main.getTaskbar().getDisaster();
+                    this.evolutionCard.next();
+                }
+            }
         },
         getTraitImage: function() {
             return this.evolved ? 'checkbox_yes' : 'checkbox_no';

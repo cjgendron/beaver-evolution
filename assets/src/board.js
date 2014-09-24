@@ -8,8 +8,8 @@ function Board(main, group) {
 	this.pieceHeight = (this.game.height - 120)/(1 + .75 * (this.numPiecesVert - 1)); //subtract the height of the taskbar and instructions
 	this.pieceWidth = Math.sqrt(3)/2.0 * this.pieceHeight;
 	this.numPiecesHor = Math.floor((this.game.width/this.pieceWidth) - 0.5);
-	this.canPopulate = true;
-	this.canBuild = true;
+	this.populateCounter = 1;
+	this.buildCounter = 1;
 };
 
 Board.prototype = {
@@ -73,14 +73,19 @@ Board.prototype = {
 	},
 
 	unlockForBuilding: function(){
-		for (piece in this.dams) {
-	    	var neighbors = this.dams[piece].getNeighbors();
-		    for (neighbor in neighbors){
-			    if (!neighbors[neighbor].getDam()){
-			        neighbors[neighbor].unlockPiece();	
+		console.log(this.canBuild);
+		if (this.canBuild()){
+			for (piece in this.dams) {
+		    	var neighbors = this.dams[piece].getNeighbors();
+			    for (neighbor in neighbors){
+				    if (!neighbors[neighbor].getDam()){
+				        neighbors[neighbor].unlockPiece();	
+				    }
 			    }
-		    }
+			}
+			return true;
 		}
+		return false;
 	},
 
 	lockAllPieces: function(){
@@ -105,6 +110,27 @@ Board.prototype = {
 
 	getDams: function(){
 		return this.dams;
+	},
+
+	incrementCounters: function(){
+		if (this.buildCounter< 1) this.buildCounter++;
+		if (this.populateCounter < 1) this.populateCounter++;
+	},
+
+	decrementBuildCounter: function(){
+		this.buildCounter--;
+	},
+
+	decrementPopulateCounter: function(){
+		this.populateCounter--;
+	},
+
+	canBuild: function(){
+		return this.buildCounter > 0;
+	},
+
+	canPopulate: function(){
+		return this.populateCounter > 0;
 	}
 	
 };

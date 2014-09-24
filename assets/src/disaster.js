@@ -30,7 +30,9 @@ var Disasters = function(main, group) {
 
 Disasters.prototype = {
 	createDisasters: function(disasters) {
-		// selectDisaster = this.game.group.button(400, 15, 'select', this.occurrence, this);
+		// Use this line to quickly cause disasters
+		// selectDisaster = this.group.add(new Phaser.Button(this.game, 400, 15, 'select', this.occurrence, this));
+
 		this.hide();
 		for (var index = 0; index < disasters.length; index++) {
 			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disasters[index][0], { fill: "black", font: "16px Arial" }));
@@ -59,6 +61,7 @@ Disasters.prototype = {
 	
 	occurrence: function() {
 		var disaster;
+
 		if (this.getRandomInt(0,1) == 0) {
 			disaster = "No disaster";
 			console.log("No disaster");
@@ -68,7 +71,7 @@ Disasters.prototype = {
 			var result = this.map[random];
 			disaster = result;
 			console.log(result);
-			this.consequences(result);	
+			this.consequences(result);
 		}
 		return disaster;
 	},
@@ -88,7 +91,7 @@ Disasters.prototype = {
 					this.main.setBeavers(Math.floor(this.main.getBeavers() / 2));
 					this.main.updateBeaverCount();
 				}
-				this.board.canPopulate = false;
+				this.main.getBoard().decrementPopulateCounter();
 				break;
 			case "Tornado":
 				var pct = 0.5;
@@ -107,11 +110,24 @@ Disasters.prototype = {
 				this.main.updateDamCount();
 				break;
 			case "Lumberjack":
-				this.board.canBuild = false;
-				// TODO: somehow lock canBuild for two turns
+				if (!this.main.getEvolutionCard().getTrait(0,1)){
+					this.main.getBoard().decrementBuildCounter();
+				}
+				this.main.getBoard().decrementBuildCounter();
 				break;
 			case "Pollution":
-				// TODO: remove an evolution trait
+				// iterate through traits, remove the first highest one we see
+				var devolved = false;
+				for (var trait = 2; trait >=0; trait--){
+					for (var category = 0; category <= 2; category++){
+						if (this.main.getEvolutionCard().getTrait(category,trait)) {
+							this.main.getEvolutionCard().devolveTrait(category,trait);
+							devolved=true;
+							break;
+						}
+					}
+					if (devolved) break;
+				}
 				break;
 			case "Poachers":
 				var random = this.getRandomInt(0, 9);
