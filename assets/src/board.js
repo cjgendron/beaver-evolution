@@ -50,6 +50,8 @@ Board.prototype = {
 	removeDam : function(piece){
 		this.dams.splice(this.dams.indexOf(piece), 1);
 		piece.removeDam();
+		taskbar = this.main.getTaskbar();
+		taskbar.updateDamCount();
 	},
 
 	drawBoard : function() {
@@ -104,7 +106,7 @@ function Piece(type, board, hexCoordinate) {
 	this.height = hexCoordinate.height;
 	this.width = hexCoordinate.width;
 	this.hexCoordinate = hexCoordinate;
-	this.dam = Math.random() < 0.2;
+	this.dam = Math.random() < 0.1;
 	this.locked = true;
 	if (this.dam){
 		this.board.placeDam(this);	

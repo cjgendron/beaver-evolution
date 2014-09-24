@@ -3,8 +3,6 @@ function Taskbar(main, group) {
 	this.game = main.game;
 	this.group = group;
 	this.damCount = this.getDamCount();
-	//this.damCount = 1;
-	// this.beaverCount = main.getBeavers();
 	this.state;
 	this.createTaskbar();
 }
@@ -63,8 +61,13 @@ Taskbar.prototype = {
 		}
 	},
 	actionOnPopulate : function(clickedButton){
-		this.main.setBeavers(this.getBeaverCount() + Math.ceil(0.25 * this.getBeaverCount()));
+		var pct = 0.25;
+		if (this.main.getEvolutionCard().getTrait(2, 1)) {
+			pct = 0.5;
+		}
+		this.main.setBeavers(this.getBeaverCount() + Math.ceil(pct * this.getBeaverCount()));
 		this.updateBeaverCount();
+		this.main.getDisasterInfo().occurrence();
 	},
 
 	actionOnEvolve : function(){

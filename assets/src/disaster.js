@@ -26,19 +26,6 @@ var Disasters = function(main, group) {
 
 	this.createDisasters(disasters);
 	this.hide();
-
-	function occurrence() {
-		if (this.getRandomInt(0,1) == 0) {
-			console.log("No disaster");
-		}
-		else {
-			var random = this.getRandomInt(0, 19);
-			var result = this.map[random];
-			console.log(result);
-			this.consequences(result);		
-		}		
-	}
-
 };
 
 Disasters.prototype = {

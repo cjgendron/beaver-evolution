@@ -2,15 +2,15 @@ var EvolutionCard = function(main, group) {
     this.main = main;
     this.game = main.game;
     this.group = group;
-    trait00 = new Trait(0, "+2 dam blocks while building");
-    trait01 = new Trait(1, "Lumberjack only affects for one turn");
-    trait02 = new Trait(2, "No population loss for famine");
-    trait10 = new Trait(0, "Only 50% population lost on poachers");
-    trait11 = new Trait(1, "Only 25% loss on tornado");
-    trait12 = new Trait(2, "Only 25% loss on drought");
-    trait20 = new Trait(0, "Only 50% loss on flood");
-    trait21 = new Trait(1, "Can increase population by 50% when populating");
-    trait22 = new Trait(2, "Only 50% dam loss on fire");
+    var trait00 = new Trait(0, "+2 dam blocks while building");
+    var trait01 = new Trait(1, "Lumberjack only affects for one turn");
+    var trait02 = new Trait(2, "No population loss for famine");
+    var trait10 = new Trait(0, "Only 50% population lost on poachers");
+    var trait11 = new Trait(1, "Only 25% loss on tornado");
+    var trait12 = new Trait(2, "Only 25% loss on drought");
+    var trait20 = new Trait(0, "Only 50% loss on flood");
+    var trait21 = new Trait(1, "Can increase population by 50% when populating");
+    var trait22 = new Trait(2, "Only 50% dam loss on fire");
     this.card = [
         Category("Craftsmanship", 0, [trait00, trait01, trait02]),
         Category("Resolve", 0, [trait10, trait11, trait12]),
@@ -40,11 +40,15 @@ EvolutionCard.prototype = {
                     100+(this.game.height/4*j),
                     traitStyle,
                     this.game,
+                    this.main,
                     this.group,
                     this,
                     this.card[i]);
             }
         }
+    },
+    getTrait: function(category, trait) {
+        return this.card[category].traits[trait].hasTrait();
     },
     show: function() {
         this.game.stage.backgroundColor = "#ffffff";
@@ -82,6 +86,7 @@ var Trait = function(stage, description) {
     this.yCoordinate;
     this.button;
     this.game;
+    this.main;
     this.group;
     this.evolved;
     this.evolutionCard;
@@ -90,12 +95,13 @@ var Trait = function(stage, description) {
     return {
         stage: stage,
         description: description,
-        init: function(x, y, traitStyle, game, group, evolutionCard, category) {
+        init: function(x, y, traitStyle, game, main, group, evolutionCard, category) {
             this.locked = stage === 0 ? false : true;
             this.evolved = false;
             this.xCoordinate = x;
             this.yCoordinate = y;
             this.game = game;
+            this.main = main;
             this.group = group;
             this.category = category;
             this.evolutionCard = evolutionCard
@@ -117,6 +123,7 @@ var Trait = function(stage, description) {
                     this.button.events.onInputDown.add(evolve, this);
                     this.category.evolve();
                     this.category.traits[this.category.getHighestStage()].unlock();
+                    this.main.getDisasterInfo().occurrence();
                     this.evolutionCard.next();
                 }
             }

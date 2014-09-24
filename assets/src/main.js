@@ -60,8 +60,8 @@ BeaverEvolution.prototype = {
         this.board = new Board(this, boardGroup);
         this.evolutionCard = new EvolutionCard(this, evolutionCardGroup);
         this.taskbar = new Taskbar(this, taskbarGroup);
-        this.board.init();
         this.disasters = new Disasters(this, disasterGroup);
+        this.board.init();
         console.log("Welcome to Beaver Evolution!");
         this.board.show();
     },
