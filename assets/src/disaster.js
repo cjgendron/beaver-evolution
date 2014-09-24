@@ -58,15 +58,19 @@ Disasters.prototype = {
 	},
 	
 	occurrence: function() {
+		var disaster;
 		if (this.getRandomInt(0,1) == 0) {
+			disaster = "No disaster";
 			console.log("No disaster");
 		}
 		else {
 			var random = this.getRandomInt(0, 19);
 			var result = this.map[random];
+			disaster = result;
 			console.log(result);
-			this.consequences(result);		
-		}		
+			this.consequences(result);	
+		}
+		return disaster;
 	},
 
 	consequences: function(result) {

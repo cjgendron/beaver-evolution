@@ -50,7 +50,6 @@ Board.prototype = {
 		this.dams.splice(this.dams.indexOf(piece), 1);
 		piece.removeDam();
 		//this.main.getTaskbar().updateDamCount();
-
 	},
 
 	drawBoard : function() {

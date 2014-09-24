@@ -6,6 +6,7 @@ function Taskbar(main, group) {
 	this.damsToBuild;
 	this.state = "view";
 	this.createTaskbar();
+	this.instructions;
 }
 
 Taskbar.prototype = {
@@ -34,6 +35,10 @@ Taskbar.prototype = {
 		this.group.add(this.populateButton);
 		this.group.add(this.evolveButton);
 		this.group.add(this.taskbarBack);
+		this.instructions = new Phaser.Text(this.game, 25, 25, "Choose to build, populate, or evolve.",
+			{ font: "20px Arial", fill: "#76ff03", align: "center", });
+		// this.instructions.shadowColor("#ffffff");
+		this.group.add(this.instructions);
 		this.group.sendToBack(this.taskbarBack);
 	},
 	show: function() {
@@ -69,6 +74,7 @@ Taskbar.prototype = {
 			this.main.getBoard().unlockForBuilding();
 			this.damsToBuild = Math.ceil(0.5 * this.getBeaverCount());
 			this.setBuildText(this.damsToBuild);
+			this.instructions.setText("Time to build! Place your dams in any cells adjacent to current dams.");
 		}
 		else if (this.main.getBoard().getDamCount() <= this.damCount + Math.ceil(0.5 * this.getBeaverCount()) 
 			&& this.main.getBoard().getDamCount() - this.damCount !=0){
@@ -77,7 +83,7 @@ Taskbar.prototype = {
 			this.damsToBuild = 0;
 			this.setBuildText("");
 			this.state = "view";
-			this.main.getDisasterInfo().occurrence();
+			this.getDisaster();
 		}
 	},
 	actionOnPopulate : function(clickedButton){
@@ -91,7 +97,7 @@ Taskbar.prototype = {
 		}
 		this.main.setBeavers(this.getBeaverCount() + Math.ceil(pct * this.getBeaverCount()));
 		this.updateBeaverCount();
-		this.main.getDisasterInfo().occurrence();
+		this.getDisaster();
 	},
 
 	actionOnEvolve : function(){
@@ -103,6 +109,7 @@ Taskbar.prototype = {
 			this.main.board.hide();
 			this.main.getDisasterInfo().hide();
 			this.main.evolutionCard.show();
+			this.instructions.setText("Choose a trait you'd like to evolve.");
 		} 
 		else {
 			this.state = "view";
@@ -146,6 +153,10 @@ Taskbar.prototype = {
 	damPlaced: function() {
 		this.damsToBuild--;
 		this.setBuildText(this.damsToBuild);
+		if (this.damsToBuild === 0) {
+			this.checkEndConditions();
+			this.getDisaster();
+		}
 	},
 
 	damRemoved: function() {
@@ -157,6 +168,10 @@ Taskbar.prototype = {
 		this.main.getBoard().clearAndLock();
 		this.damsToBuild = 0;
 		this.setBuildText("");
+	},
+	getDisaster: function() {
+		var disaster = this.main.getDisasterInfo().occurrence();
+		this.instructions.setText("The disaster was: " + disaster + ". Choose build, populate, or evolve.");	
 	}
 
 

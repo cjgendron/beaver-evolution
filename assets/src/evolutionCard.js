@@ -29,7 +29,7 @@ EvolutionCard.prototype = {
         var categoryStyle = { font: "30px Arial", fill: "#01579b", align: "center" };
         var traitStyle = { font: "25px Arial", fill: "#000000", align: "left", wordWrap: true, wordWrapWidth: this.game.width/3 - 50};
 
-        var text = "You can populate in any of the three categories, but you must evolve traits in order.";
+        var text = "You can evolve in any of the three categories, but you must evolve traits in order.";
         this.group.add(new Phaser.Text(this.game, 0, 0, text, titleStyle));
 
         for (i = 0; i < this.card.length; i++) {
@@ -124,6 +124,7 @@ var Trait = function(stage, description) {
                     this.category.evolve();
                     this.category.traits[this.category.getHighestStage()].unlock();
                     this.main.getDisasterInfo().occurrence();
+                    this.main.getTaskbar().getDisaster();
                     this.evolutionCard.next();
                 }
             }
