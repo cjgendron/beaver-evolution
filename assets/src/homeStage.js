@@ -29,18 +29,17 @@ HomeStage.prototype = {
 	create: function() {
 		this.add.sprite(0, 0, 'homeBackground');
 		// Title
-		this.title = this.add.text(120, 40, "Beaver Evolution");
-		this.title.fontSize = 80;
-		this.title.fill = "#FFFFFF";
+		var titleStyle = { font: "80px Arial", fill: "#FFFFFF", align: "center" };
+		this.title = this.add.text(120, 40, "Beaver Evolution", titleStyle);
+
+		var textStyle = { font: "20px Arial", fill: "#FFFFFF", align: "left" , wordWrap: true, wordWrapWidth: 750};
 
 		// Add some instructions
 		var currentY = 150;
 		var spacing = 35;
 		for (var i = 0; i < this.instructionText.length; i++) {
-			newText = this.add.text(20, currentY, this.instructionText[i]);
-			newText.fontSize = 20;
-			this.instructionText[i].wordWrapWidth = 600;
-			currentY += spacing;
+			newText = this.add.text(20, currentY, this.instructionText[i], textStyle);
+			currentY += 1.25*spacing;
 		};
 		this.playButton = this.add.button(520, 430, 'playButton', this.startGame);
 		this.beaver2 = this.add.sprite(30, 310, 'homeBeaver2');
