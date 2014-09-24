@@ -25,6 +25,7 @@ var Disasters = function(main, group) {
 				"Tornado"];
 
 	this.createDisasters(disasters);
+	this.hide();
 
 	function occurrence() {
 		if (this.getRandomInt(0,1) == 0) {
@@ -48,6 +49,7 @@ Disasters.prototype = {
 			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disasters[index][0], { fill: "black", font: "16px Arial" }));
 			this.group.add(new Phaser.Text(this.game, 100, (index * 50) + 70, disasters[index][1], { fill: "black", font: "12px Arial", wordWrap: true, wordWrapWidth: 700 }));
 			this.group.add(new Phaser.Text(this.game, 400, (index * 50) + 50, disasters[index][2], { fill: "black", font: "12px Arial" }));
+			//Should ake each disaster its own group and then only show based on what disasters could occur
 		}
 	},
 
