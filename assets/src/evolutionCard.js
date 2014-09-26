@@ -91,6 +91,8 @@ var Category = function(name, highestStage, traits) {
                 this.highestStage = 1;
             } else if (this.highestStage === 1) {
                 this.highestStage = 2;
+            } else if (this.highestStage === 2) {
+                this.highestStage = 3;
             }
         },
         devolve: function() {

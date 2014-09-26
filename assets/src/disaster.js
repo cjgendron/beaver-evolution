@@ -7,22 +7,24 @@ var Disasters = function(main, group) {
 	//this.beavers = main.beavers;
 	//this.board.getDams() = main.board.dams;
 
-	var disasters = [["Poacher", "Hunters looking for beaver furs swing through, killing some number of your beavers", 0.05],
-					 ["Pollution", "The polluted waters mutate your beavers' genes. Lose one evolution trait.", 0.1],
+	var disasters = [
 					 ["Lumberjack", "The forest has been leveled. There are no trees left to build with for two generations.", 0.15],
 					 ["Forest Fire", "The land is scorched with a wild fire. No land based dam spaces survived the blaze.", 0.2],
 					 ["Flash Flood", "The river becomes swollen, washing away all water based dam spaces", 0.2],
 					 ["Drought", "The river runs dry, causing a chain effect that leads to starvation of half of your beavers", 0.15],
+					 ["Pollution", "The polluted waters mutate your beavers' genes. Lose one evolution trait.", 0.1],
 					 ["Famine", "The shrubs and grass your beavers subsist on do not grow. Half of your population dies and repopulation is impossible for one turn", 0.1],
-					 ["Tornado", "A massive tornado whips through, destroying half of your dam and killing half of your population", 0.05]];
-	this.map = ["Poacher", 
-				"Pollution", "Pollution", 
-				"Lumberjack", "Lumberjack", "Lumberjack", 
-				"Forest Fire", "Forest Fire", "Forest Fire", "Forest Fire",
-				"Flash Flood", "Flash Flood", "Flash Flood", "Flash Flood",
-				"Drought", "Drought", "Drought", 
-				"Famine", "Famine", 
-				"Tornado"];
+					 ["Tornado", "A massive tornado whips through, destroying half of your dam and killing half of your population", 0.05],
+					 ["Poacher", "Hunters looking for beaver furs swing through, killing some number of your beavers", 0.05]
+					 ];
+	// this.map = ["Poacher", 
+	// 			"Pollution", "Pollution", 
+	// 			"Lumberjack", "Lumberjack", "Lumberjack", 
+	// 			"Forest Fire", "Forest Fire", "Forest Fire", "Forest Fire",
+	// 			"Flash Flood", "Flash Flood", "Flash Flood", "Flash Flood",
+	// 			"Drought", "Drought", "Drought", 
+	// 			"Famine", "Famine", 
+	// 			"Tornado"];
 
 	this.createDisasters(disasters);
 	this.hide();
@@ -37,7 +39,8 @@ Disasters.prototype = {
 		for (var index = 0; index < disasters.length; index++) {
 			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disasters[index][0], { fill: "black", font: "16px Arial" }));
 			this.group.add(new Phaser.Text(this.game, 100, (index * 50) + 70, disasters[index][1], { fill: "black", font: "12px Arial", wordWrap: true, wordWrapWidth: 700 }));
-			this.group.add(new Phaser.Text(this.game, 400, (index * 50) + 50, disasters[index][2], { fill: "black", font: "12px Arial" }));
+			// commented out probabilities because they're no longer accurate with scaling disasters
+			// this.group.add(new Phaser.Text(this.game, 400, (index * 50) + 50, disasters[index][2], { fill: "black", font: "12px Arial" }));
 			//Should make each disaster its own group and then only show based on what disasters could occur
 		}
 	},
@@ -67,8 +70,9 @@ Disasters.prototype = {
 			console.log("No disaster");
 		}
 		else {
-			var random = this.getRandomInt(0, 19);
-			var result = this.map[random];
+			var map = this.progressiveMap();
+			var random = this.getRandomInt(0, map.length - 1);
+			var result = map[random];
 			disaster = result;
 			console.log(result);
 			this.consequences(result);
@@ -172,5 +176,43 @@ Disasters.prototype = {
 
 	getRandomInt: function(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
+	},
+
+	progressiveMap: function() {
+		var maxTraitLevel = 0;
+		var card = this.main.getEvolutionCard().card;
+		for(var i = 0; i < card.length; i++) {
+			var stage = card[i].getHighestStage();
+			if(typeof(stage) === "number"){
+				maxTraitLevel = Math.max(maxTraitLevel, stage);
+			}
+		}
+
+		var disasterTier = 0;
+		if(maxTraitLevel > 1 || this.board.getDamCount() >= 18 || this.main.getBeavers() >= 16) {
+			disasterTier = 1;
+		}
+		if(maxTraitLevel === 3 || (this.board.getDamCount() >= 25 && this.main.getBeavers() >= 22))  {
+			disasterTier = 2;
+		}
+
+		var progressiveMap = [
+			"Lumberjack", "Lumberjack", "Lumberjack", 
+			"Forest Fire", "Forest Fire", "Forest Fire", "Forest Fire",
+			"Flash Flood", "Flash Flood", "Flash Flood", "Flash Flood",
+			"Drought", "Drought", "Drought"
+		];
+
+		if (disasterTier > 0) {
+			progressiveMap = progressiveMap.concat(["Pollution", "Pollution", "Famine", "Famine"]);
+		}
+		if (disasterTier === 2) {
+			progressiveMap = progressiveMap.concat(["Poacher", "Tornado"]);
+		}
+
+		console.log("your disaster tier is: ", disasterTier);
+		return progressiveMap;
+
 	}
+
 }
