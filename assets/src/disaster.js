@@ -6,27 +6,42 @@ var Disasters = function(main, group) {
 	//this.damCount = main.board.getDamCount();
 	//this.beavers = main.beavers;
 	//this.board.getDams() = main.board.dams;
+	this.disasters = {
+		"Lumberjack": {
+			description: "The forest has been leveled. There are no trees left to build with for two generations.",
+			probability: 0.15
+		},
+		"Forest Fire": {
+			description: "The land is scorched with a wild fire. No land based dam spaces survived the blaze.",
+			probability: 0.2
+		},
+		"Flash Flood": {
+			description: "The river becomes swollen, washing away all water based dam spaces",
+			probability: 0.2,
+		},
+		"Drought": {
+			description: "The river runs dry, causing a chain effect that leads to starvation of half of your beavers",
+			probability: 0.15,
+		},
+		"Pollution": {
+			description: "The polluted waters mutate your beavers' genes. Lose one evolution trait.",
+			probability: 0.1,
+		},
+		"Famine": {
+			description: "The shrubs and grass your beavers subsist on do not grow. Half of your population dies and repopulation is impossible for one turn",
+			probability: 0.1,
+		},
+		"Tornado": {
+			description: "A massive tornado whips through, destroying half of your dam and killing half of your population",
+			probability: 0.05,
+		},
+		"Poacher": {
+			description: "Hunters looking for beaver furs swing through, killing some number of your beavers",
+			probability: 0.05,
+		}
+	};
 
-	var disasters = [
-					 ["Lumberjack", "The forest has been leveled. There are no trees left to build with for two generations.", 0.15],
-					 ["Forest Fire", "The land is scorched with a wild fire. No land based dam spaces survived the blaze.", 0.2],
-					 ["Flash Flood", "The river becomes swollen, washing away all water based dam spaces", 0.2],
-					 ["Drought", "The river runs dry, causing a chain effect that leads to starvation of half of your beavers", 0.15],
-					 ["Pollution", "The polluted waters mutate your beavers' genes. Lose one evolution trait.", 0.1],
-					 ["Famine", "The shrubs and grass your beavers subsist on do not grow. Half of your population dies and repopulation is impossible for one turn", 0.1],
-					 ["Tornado", "A massive tornado whips through, destroying half of your dam and killing half of your population", 0.05],
-					 ["Poacher", "Hunters looking for beaver furs swing through, killing some number of your beavers", 0.05]
-					 ];
-	// this.map = ["Poacher", 
-	// 			"Pollution", "Pollution", 
-	// 			"Lumberjack", "Lumberjack", "Lumberjack", 
-	// 			"Forest Fire", "Forest Fire", "Forest Fire", "Forest Fire",
-	// 			"Flash Flood", "Flash Flood", "Flash Flood", "Flash Flood",
-	// 			"Drought", "Drought", "Drought", 
-	// 			"Famine", "Famine", 
-	// 			"Tornado"];
-
-	this.createDisasters(disasters);
+	this.createDisasters(this.disasters);
 	this.hide();
 };
 
@@ -36,13 +51,22 @@ Disasters.prototype = {
 		// selectDisaster = this.group.add(new Phaser.Button(this.game, 400, 15, 'select', this.occurrence, this));
 
 		this.hide();
-		for (var index = 0; index < disasters.length; index++) {
-			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disasters[index][0], { fill: "black", font: "16px Arial" }));
-			this.group.add(new Phaser.Text(this.game, 100, (index * 50) + 70, disasters[index][1], { fill: "black", font: "12px Arial", wordWrap: true, wordWrapWidth: 700 }));
-			// commented out probabilities because they're no longer accurate with scaling disasters
-			// this.group.add(new Phaser.Text(this.game, 400, (index * 50) + 50, disasters[index][2], { fill: "black", font: "12px Arial" }));
-			//Should make each disaster its own group and then only show based on what disasters could occur
+		// console.log(disasters.keys());
+		var index = 0;
+		var disasterKeys = Object.keys(disasters);
+		for (var index = 0; index < disasterKeys.length; index++) {
+			var disaster = disasterKeys[index];
+			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disaster, { fill: "black", font: "16px Arial" }));
+			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 70, disasters[disaster].description, { fill: "black", font: "12px Arial", wordWrap: true, wordWrapWidth: 700 }));
+			index++;
 		}
+		// for (var index = 0; index < disasters.keys(); index++) {
+		// 	this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disasters[index].name, { fill: "black", font: "16px Arial" }));
+		// 	this.group.add(new Phaser.Text(this.game, 100, (index * 50) + 70, disasters[index].description, { fill: "black", font: "12px Arial", wordWrap: true, wordWrapWidth: 700 }));
+		// 	// commented out probabilities because they're no longer accurate with scaling disasters
+		// 	// this.group.add(new Phaser.Text(this.game, 400, (index * 50) + 50, disasters[index][2], { fill: "black", font: "12px Arial" }));
+		// 	//Should make each disaster its own group and then only show based on what disasters could occur
+		// }
 	},
 
 	getGroup: function() {
@@ -67,6 +91,7 @@ Disasters.prototype = {
 
 		if (this.getRandomInt(0,1) == 0) {
 			disaster = "No disaster";
+			// this.showResult("no disaster", "nothing happened");
 			console.log("No disaster");
 		}
 		else {
@@ -87,13 +112,19 @@ Disasters.prototype = {
 				if (this.main.getEvolutionCard().getTrait(1,2)) {
 					pct = 0.75;
 				}
-				this.main.setBeavers(Math.floor(this.main.getBeavers() * pct));
+				var lostBeavers = Math.floor(this.main.getBeavers() * pct);
+				this.main.setBeavers(lostBeavers);
 				this.main.updateBeaverCount();
+				this.showResult("Drought", "Because of the drought, you now only have " + lostBeavers + " beavers.");
 				break;
 			case "Famine":
 				if (!this.main.getEvolutionCard().getTrait(0,2)) {
-					this.main.setBeavers(Math.floor(this.main.getBeavers() / 2));
+					var lostBeavers = Math.floor(this.main.getBeavers() / 2)
+					this.main.setBeavers(lostBeavers);
 					this.main.updateBeaverCount();
+					this.showResult("Famine", "The famine left you with only " + lostBeavers + " beavers.");
+				} else {
+					this.showResult("Famine", "Good thing you're immune from population loss during famine!");
 				}
 				this.main.getBoard().decrementPopulateCounter();
 				break;
@@ -102,7 +133,8 @@ Disasters.prototype = {
 				if (this.main.getEvolutionCard().getTrait(1,1)) {
 					pct = 0.25;
 				}
-				this.main.setBeavers(Math.floor(this.main.getBeavers() * (1-pct)));
+				var lostBeavers = Math.floor(this.main.getBeavers() * (1-pct));
+				this.main.setBeavers(lostBeavers);
 				this.main.updateBeaverCount();
 				// Currently just going to destroy the first half of the dams in the array
 				var dams = this.board.getDams();
@@ -112,19 +144,26 @@ Disasters.prototype = {
 				}
 				this.main.updateBeaverCount();
 				this.main.updateDamCount();
+				this.showResult("Tornado", "You're left with only " + lostBeavers + " beavers and you lost " + toDestroy + " dams.");
 				break;
 			case "Lumberjack":
+				var turnsLost = 0;
 				if (!this.main.getEvolutionCard().getTrait(0,1)){
 					this.main.getBoard().decrementBuildCounter();
+					turnsLost++;
 				}
 				this.main.getBoard().decrementBuildCounter();
+				turnsLost++;
+				this.showResult("Lumberjack", "Because of the lumberjacks, you can't build " + turnsLost + " dams for two turns.");
 				break;
 			case "Pollution":
 				// iterate through traits, remove the first highest one we see
 				var devolved = false;
+				var trait = null;
 				for (var trait = 2; trait >=0; trait--){
 					for (var category = 0; category <= 2; category++){
 						if (this.main.getEvolutionCard().getTrait(category,trait)) {
+							trait = this.main.getEvolutionCard().getTraitDescription(category, trait);
 							this.main.getEvolutionCard().devolveTrait(category,trait);
 							devolved=true;
 							break;
@@ -132,14 +171,17 @@ Disasters.prototype = {
 					}
 					if (devolved) break;
 				}
+				this.showResult("Pollution", "You lost this trait: " + trait);
 				break;
 			case "Poachers":
 				var random = this.getRandomInt(0, 9);
 				if (this.main.getEvolutionCard().getTrait(1,0)) {
 					random *= 0.5;
 				}
-				this.main.setBeavers(this.main.getBeavers() - random);
+				var lostBeavers = this.main.getBeavers() - random;
+				this.main.setBeavers(lostBeavers);
 				this.main.updateBeaverCount();
+				this.showResult("Poachers", "You now only have " + lostBeavers + " beavers.");
 				break;
 			case "Forest Fire":
 				var pct = 1;
@@ -156,6 +198,7 @@ Disasters.prototype = {
 					this.board.removeDam(piece);
 				}
 				this.main.updateDamCount();
+				this.showResult("Forest Fire", "You lost " + toDestroy + " land dams in the forest fire.");
 				break;
 			case "Flash Flood":
 				var pct = 1;
@@ -170,8 +213,9 @@ Disasters.prototype = {
 					this.board.removeDam(piece);
 				}
 				this.main.updateDamCount();
+				this.showResult("Flash Flood", "You lost " + toDestroy + " water dams in the flash flood.");
 				break;
-		}		
+		}
 	},
 
 	getRandomInt: function(min, max) {
@@ -212,7 +256,50 @@ Disasters.prototype = {
 
 		console.log("your disaster tier is: ", disasterTier);
 		return progressiveMap;
+	},
+	showResult: function(name, result) {
+		var eventGroup = this.game.add.group();
+		eventGroup.add(new Phaser.Image(this.game, 100, 100, 'disaster_bg'));
+		nameText = new Phaser.Text(this.game, 150, 150, name,
+			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:500});
+		descriptionText = new Phaser.Text(this.game, 150, 250, this.disasters[name].description,
+			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:500});
+		resultText = new Phaser.Text(this.game, 150, 350, result,
+			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:500});
+		
+		eventGroup.add(nameText);
+		eventGroup.add(descriptionText);
+		eventGroup.add(resultText);
+		this.main.taskbar.lockTaskbar();
+		eventGroup.visible = true;
+		eventGroup.add(new Phaser.Button(this.game, 400, 400, 'next', hideEventGroup, this));
+		return eventGroup;
 
+		function hideEventGroup(button) {
+			eventGroup.visible = false;
+			this.main.taskbar.unlockTaskbar();
+		}
 	}
 
 }
+
+
+// var DisasterEvent = function(name, description, probability) {
+// 	this.name = name;
+// 	this.description = description;
+// 	this.probability = probability;
+// }
+
+// DisasterEvent.prototype =  {
+// 	getProbability: function() {
+// 		return this.probability
+// 	},
+// 	setProbability: function(probability) {
+// 		this.probability = probability;
+// 	},
+// 	getCard: function() {
+// 		var rect = new Phaser.Rectangle(100, 100, 800-100*2, 600-100*2);
+// 		this.game.debug.geom(rect,'#ffffff');
+
+// 	}
+// }

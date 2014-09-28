@@ -50,6 +50,9 @@ EvolutionCard.prototype = {
     getTrait: function(category, trait) {
         return this.card[category].traits[trait].hasTrait();
     },
+    getTraitDescription: function(category, trait) {
+        return this.card[category].traits[trait].description;
+    },
     devolveTrait: function(category, trait) {
         return this.card[category].traits[trait].devolveTrait();
     },
@@ -147,7 +150,7 @@ var Trait = function(stage, description) {
                     this.button.events.onInputDown.add(evolve, this);
                     this.category.evolve();
                     this.category.traits[this.category.getHighestStage()].unlock();
-                    this.main.getTaskbar().getDisaster();
+                    this.main.getTaskbar().showTurnResult("Evolve", "Yay! You've evolved!");
                     this.evolutionCard.next();
                 }
             }

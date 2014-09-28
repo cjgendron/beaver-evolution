@@ -40,6 +40,7 @@ BeaverEvolution.prototype = {
         this.game.load.image('buildButton', "/assets/images/build.png");
         this.game.load.image('populateButton', "/assets/images/populate.png");
         this.game.load.image('evolveButton', "/assets/images/evolve.png");
+        this.game.load.image('next', "/assets/images/next.png");
         this.game.load.image('helpButton', "/assets/images/help.png");
         this.game.load.image("test_image", "../assets/images/phaser.png");
         this.game.load.image("green", "../assets/images/green.png");
@@ -51,6 +52,7 @@ BeaverEvolution.prototype = {
         this.game.load.image("dam_water", "/assets/images/dam_water.png", 42, 48);
         this.game.load.image('checkbox_no', '../assets/images/checkbox_no.png', 40, 40);
         this.game.load.image('checkbox_yes', '../assets/images/checkbox_yes.png', 40, 40);
+        this.game.load.image('disaster_bg', '../assets/images/disaster_bg.png');
 
         this.game.load.audio('tornado',"/assets/sound/tornado.aif");
         this.game.load.audio('fire',"/assets/sound/fire.wav");

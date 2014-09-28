@@ -88,7 +88,7 @@ Board.prototype = {
 	},
 
 	unlockForBuilding: function(){
-		console.log(this.canBuild);
+		// console.log(this.canBuild);
 		if (this.canBuild()){
 			for (piece in this.dams) {
 		    	var neighbors = this.dams[piece].getNeighbors();
