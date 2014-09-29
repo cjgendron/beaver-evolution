@@ -88,7 +88,6 @@ Board.prototype = {
 	},
 
 	unlockForBuilding: function(){
-		// console.log(this.canBuild);
 		if (this.canBuild()){
 			for (piece in this.dams) {
 		    	var neighbors = this.dams[piece].getNeighbors();
@@ -96,7 +95,7 @@ Board.prototype = {
 				    if (!neighbors[neighbor].getDam()){
 				        neighbors[neighbor].unlockPiece();	
 				    }
-			    }
+				}
 			}
 			return true;
 		}
@@ -119,7 +118,6 @@ Board.prototype = {
 		for (piece in piecesToRemove){
 			piecesToRemove[piece].lockPiece();
 			this.removeDam(piecesToRemove[piece]);
-			console.log('here');
 		}
 	},
 

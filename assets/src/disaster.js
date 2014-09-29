@@ -282,7 +282,8 @@ Disasters.prototype = {
 
 		function hideEventGroup(button) {
 			eventGroup.visible = false;
-			this.main.taskbar.unlockTaskbar();
+			this.main.getTaskbar().checkEndConditions();
+			this.main.getTaskbar().unlockTaskbar();
 		}
 	}
 

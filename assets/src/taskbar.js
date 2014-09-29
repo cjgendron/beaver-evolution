@@ -155,7 +155,6 @@ Taskbar.prototype = {
 	updateDamCount: function(){
 		this.damCount = this.getDamCount();
 		this.damCountText.setText(this.damCount);
-		this.checkEndConditions();
 	},
 
 	getBeaverCount: function(){
@@ -164,7 +163,6 @@ Taskbar.prototype = {
 
 	updateBeaverCount: function(){
 		this.beaverCountText.setText(this.getBeaverCount());
-		this.checkEndConditions();
 	},
 
 	checkEndConditions: function() {
@@ -222,6 +220,7 @@ Taskbar.prototype = {
 
 		function getDisaster(button) {
 			turnGroup.visible = false;
+			this.checkEndConditions();
 			this.main.taskbar.unlockTaskbar();
 			this.getDisaster();
 		}
