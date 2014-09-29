@@ -3,12 +3,11 @@ var HomeStage = function (game) {
 	this.playButton = null;
 	this.game = game;
 
-	this.instructionText = [
-		"Choose to evolve your colony to better withstand disasters over time",
-		"Every turn, you will have the option to add more beavers or more dams",
-		"Each turn also brings the chance of a random natural disaster, which can devastate your colony",
-		"Evolve your colony of beavers over time to withstand natural disasters!",
-	];
+	this.instructionText =
+		"Choose to evolve your colony to better withstand disasters over time.\n" + 
+		"Every turn, you will have the option to add more beavers or more dams.\n"+
+		"Be careful of random natural disasters -- they could devastate your colony.\n"+
+		"Evolve your colony of beavers over time to withstand natural disasters!";
 }
 
 HomeStage.prototype = {
@@ -23,26 +22,20 @@ HomeStage.prototype = {
 		this.load.image('playButton', 'assets/images/play_button.png');
 		this.load.image('homeBeaver1', 'assets/images/beaver.png');
 		this.load.image('homeBeaver2', 'assets/images/beaver2.png');
-
+		this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js');
 	},
 
 	create: function() {
 		this.add.sprite(0, 0, 'homeBackground');
 		// Title
-		var titleStyle = { font: "80px Arial", fill: "#FFFFFF", align: "center" };
-		this.title = this.add.text(120, 40, "Beaver Evolution", titleStyle);
+		var titleStyle = { font: "80px Bubblegum Sans", fill: "#FFFFFF", align: "center"};
+		this.title = this.add.text(125, 40, "Beaver Evolution", titleStyle);
 
-		var textStyle = { font: "20px Arial", fill: "#FFFFFF", align: "left" , wordWrap: true, wordWrapWidth: 750};
+		var textStyle = { font: "22px Open Sans", fill: "#FFFFFF", align: "center" , wordWrap: true, wordWrapWidth: 750};
 
-		// Add some instructions
-		var currentY = 150;
-		var spacing = 35;
-		for (var i = 0; i < this.instructionText.length; i++) {
-			newText = this.add.text(20, currentY, this.instructionText[i], textStyle);
-			currentY += 1.25*spacing;
-		};
-		this.playButton = this.add.button(520, 430, 'playButton', this.startGame);
-		this.beaver2 = this.add.sprite(30, 310, 'homeBeaver2');
+		newText = this.add.text(25, 160, this.instructionText, textStyle);
+		this.playButton = this.add.button(440, 380, 'playButton', this.startGame);
+		this.beaver2 = this.add.sprite(50, 330, 'homeBeaver2');
 	},
 
 	startGame: function() {

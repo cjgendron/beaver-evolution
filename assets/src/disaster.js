@@ -16,11 +16,11 @@ var Disasters = function(main, group) {
 			probability: 0.2
 		},
 		"Flash Flood": {
-			description: "The river becomes swollen, washing away all water based dam spaces",
+			description: "The river becomes swollen, washing away all water based dam spaces.",
 			probability: 0.2,
 		},
 		"Drought": {
-			description: "The river runs dry, causing a chain effect that leads to starvation of half of your beavers",
+			description: "The river runs dry, causing a chain effect that leads to starvation of half of your beavers.",
 			probability: 0.15,
 		},
 		"Pollution": {
@@ -28,15 +28,15 @@ var Disasters = function(main, group) {
 			probability: 0.1,
 		},
 		"Famine": {
-			description: "The shrubs and grass your beavers subsist on do not grow. Half of your population dies and repopulation is impossible for one turn",
+			description: "The shrubs and grass your beavers subsist on do not grow. Half of your population dies and repopulation is impossible for one turn.",
 			probability: 0.1,
 		},
 		"Tornado": {
-			description: "A massive tornado whips through, destroying half of your dam and killing half of your population",
+			description: "A massive tornado whips through, destroying half of your dam and killing half of your population.",
 			probability: 0.05,
 		},
 		"Poacher": {
-			description: "Hunters looking for beaver furs swing through, killing some number of your beavers",
+			description: "Hunters looking for beaver furs swing through, killing some number of your beavers.",
 			probability: 0.05,
 		}
 	};
@@ -56,17 +56,10 @@ Disasters.prototype = {
 		var disasterKeys = Object.keys(disasters);
 		for (var index = 0; index < disasterKeys.length; index++) {
 			var disaster = disasterKeys[index];
-			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disaster, { fill: "black", font: "16px Arial" }));
-			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 70, disasters[disaster].description, { fill: "black", font: "12px Arial", wordWrap: true, wordWrapWidth: 700 }));
+			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disaster, { fill: "black", font: "24px Bubblegum Sans" }));
+			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 80, disasters[disaster].description, { fill: "black", font: "16px Open Sans", wordWrap: true, wordWrapWidth: 700 }));
 			index++;
 		}
-		// for (var index = 0; index < disasters.keys(); index++) {
-		// 	this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disasters[index].name, { fill: "black", font: "16px Arial" }));
-		// 	this.group.add(new Phaser.Text(this.game, 100, (index * 50) + 70, disasters[index].description, { fill: "black", font: "12px Arial", wordWrap: true, wordWrapWidth: 700 }));
-		// 	// commented out probabilities because they're no longer accurate with scaling disasters
-		// 	// this.group.add(new Phaser.Text(this.game, 400, (index * 50) + 50, disasters[index][2], { fill: "black", font: "12px Arial" }));
-		// 	//Should make each disaster its own group and then only show based on what disasters could occur
-		// }
 	},
 
 	getGroup: function() {
@@ -261,18 +254,18 @@ Disasters.prototype = {
 		var eventGroup = this.game.add.group();
 		eventGroup.add(new Phaser.Image(this.game, 100, 100, 'disaster_bg'));
 		nameText = new Phaser.Text(this.game, 150, 150, name,
-			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:500});
+			{ font: "50px BubbleGum Sans", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:500});
 		descriptionText = new Phaser.Text(this.game, 150, 250, this.disasters[name].description,
-			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:500});
+			{ font: "20px Open Sans", fill: "#763303", align: "left", wordWrap: true, wordWrapWidth:500});
 		resultText = new Phaser.Text(this.game, 150, 350, result,
-			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:500});
+			{ font: "20px Open Sans", fill: "#763303", align: "left", wordWrap: true, wordWrapWidth:500});
 		
 		eventGroup.add(nameText);
 		eventGroup.add(descriptionText);
 		eventGroup.add(resultText);
 		this.main.taskbar.lockTaskbar();
 		eventGroup.visible = true;
-		eventGroup.add(new Phaser.Button(this.game, 400, 400, 'next', hideEventGroup, this));
+		eventGroup.add(new Phaser.Button(this.game, 500, 420, 'next', hideEventGroup, this));
 		return eventGroup;
 
 		function hideEventGroup(button) {

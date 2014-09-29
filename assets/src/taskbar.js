@@ -16,13 +16,14 @@ Taskbar.prototype = {
 	},
 	createTaskbar: function() {
 		this.taskbarBack = this.game.add.image(0,540,'taskbarBack');
-		this.beaverImage = new Phaser.Image(this.game, 0, 550, 'beaverImage');
+		this.beaverImage = new Phaser.Image(this.game, 50, 545, 'beaverImage');
 		this.beaverImage.scale.setTo(0.1,0.1);
-		this.beaverCountText = this.game.add.text(50, 550, this.getBeaverCount(), {fill: "#ff0044"});
-		this.damImage = this.game.add.image(150, 550, 'dam');
+		var numStyle = {font: "30px Bubblegum Sans", fill: "#ff0000"};
+		this.beaverCountText = this.game.add.text(90, 550, this.getBeaverCount(), numStyle);
+		this.damImage = this.game.add.image(150, 545, 'dam');
 		this.damImage.scale.setTo(0.2,0.2);
-		this.damCountText = this.game.add.text(200, 550, this.damCount, { fill: "#ff0044"});
-		this.damCountToBuildText = this.game.add.text(240, 550, null, { fill: "#00ff44"});
+		this.damCountText = this.game.add.text(190, 550, this.damCount, numStyle);
+		this.damCountToBuildText = this.game.add.text(230, 550, null, { fill: "#00ff44"});
 		this.infoButton = this.game.add.button(300, 550, 'infoButton', this.actionOnInfo, this);
 		this.buildButton = this.game.add.button(400, 550, 'buildButton', this.actionOnBuild, this);
 		this.populateButton = this.game.add.button(500, 550, 'populateButton', this.actionOnPopulate, this);
@@ -36,8 +37,8 @@ Taskbar.prototype = {
 		this.group.add(this.populateButton);
 		this.group.add(this.evolveButton);
 		this.group.add(this.taskbarBack);
-		this.instructions = new Phaser.Text(this.game, 0, 490, "Let's get started! Choose to build, populate, or evolve.",
-			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:800});
+		this.instructions = new Phaser.Text(this.game, 50, 490, "Let's get started! Choose to build, populate, or evolve.",
+			{ font: "20px Open Sans", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:700});
 		this.group.add(this.instructions);
 		this.group.sendToBack(this.taskbarBack);
 	},
@@ -94,7 +95,7 @@ Taskbar.prototype = {
 				this.damsToBuild = 0;
 				this.setBuildText("");
 				this.state = "view";
-				this.showTurnResult("Build", "Yay! You just built!");
+				this.showTurnResult("Build", "All that hard work build dams paid off! You now have " + this.getDamCount() + " dams.");
 			}			
 		}
 	},
@@ -208,14 +209,14 @@ Taskbar.prototype = {
 		var turnGroup = this.game.add.group();
 		turnGroup.add(new Phaser.Image(this.game, 100, 100, 'disaster_bg'));
 		nameText = new Phaser.Text(this.game, 150, 150, name,
-			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:500});
-		resultText = new Phaser.Text(this.game, 150, 350, text,
-			{ font: "20px Arial", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:500});
+			{ font: "50px Bubblegum Sans", fill: "#763303", align: "left", wordWrap: true, wordWrapWidth:500});
+		resultText = new Phaser.Text(this.game, 150, 250, text,
+			{ font: "20px Open Sans", fill: "#763303", align: "left", wordWrap: true, wordWrapWidth:500});
 		
 		turnGroup.add(nameText);
 		turnGroup.add(resultText);
 		this.main.taskbar.lockTaskbar();
-		turnGroup.add(new Phaser.Button(this.game, 400, 400, 'next', getDisaster, this));
+		turnGroup.add(new Phaser.Button(this.game, 500, 420, 'next', getDisaster, this));
 		turnGroup.visible = true;
 		return turnGroup;
 
