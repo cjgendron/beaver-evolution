@@ -5,10 +5,10 @@ var InstructionsStage = function (game) {
 
     this.instructionText =
         "Your goal is to create a colony of at least 30 beavers, build at least 40 dams," + 
-        " or fully evolve. If you're ever under 2 beavers, you'll be unable to reproduce," +
-        " and if you run out of dams, your beavers won't be able to survive.\n" +
+        " or fully evolve. If you are ever under 2 beavers, you will be unable to reproduce," +
+        " and if you run out of dams, your beavers won't be able to survive. " +
         "Each turn, you can choose to build dams, populate your beavers, or evolve a trait." +
-        "You cannot popular beyond the number of dams you have.";
+        "You cannot populate beyond the number of dams you have.";
 }
 
 InstructionsStage.prototype = {

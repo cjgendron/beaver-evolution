@@ -138,6 +138,8 @@ Disasters.prototype = {
 				this.main.updateBeaverCount();
 				this.main.updateDamCount();
 				this.showResult("Tornado", "You're left with only " + lostBeavers + " beavers and you lost " + toDestroy + " dams.");
+				this.tornado = this.game.add.audio("tornado");
+				this.tornado.play();
 				break;
 			case "Lumberjack":
 				var turnsLost = 0;
@@ -147,7 +149,9 @@ Disasters.prototype = {
 				}
 				this.main.getBoard().decrementBuildCounter();
 				turnsLost++;
-				this.showResult("Lumberjack", "Because of the lumberjacks, you can't build " + turnsLost + " dams for two turns.");
+				this.showResult("Lumberjack", "Because of the lumberjacks, you can't build  dams for " + turnsLost + " turns.");
+				this.lumberjack = this.game.add.audio("lumberjack");
+				this.lumberjack.play("",0,0.75);
 				break;
 			case "Pollution":
 				// iterate through traits, remove the first highest one we see
@@ -165,6 +169,8 @@ Disasters.prototype = {
 					if (devolved) break;
 				}
 				this.showResult("Pollution", "You lost this trait: " + trait);
+				this.pollution = this.game.add.audio("pollution");
+				this.pollution.play();
 				break;
 			case "Poachers":
 				var random = this.getRandomInt(0, 9);
@@ -175,10 +181,12 @@ Disasters.prototype = {
 				this.main.setBeavers(lostBeavers);
 				this.main.updateBeaverCount();
 				this.showResult("Poachers", "You now only have " + lostBeavers + " beavers.");
+				this.poacher = this.game.add.audio("poacher");
+				this.poacher.play("",0,0.4);
 				break;
 			case "Forest Fire":
 				var pct = 1;
-				if (this.main.getEvolutionCard().getTrait(2,0)) {
+				if (this.main.getEvolutionCard().getTrait(2,2)) {
 					pct = 0.5;
 				}
 				var landDams = this.board.getDamsOfType("land");
@@ -192,6 +200,8 @@ Disasters.prototype = {
 				}
 				this.main.updateDamCount();
 				this.showResult("Forest Fire", "You lost " + toDestroy + " land dams in the forest fire.");
+				this.fire = this.game.add.audio("fire");
+				this.fire.play();
 				break;
 			case "Flash Flood":
 				var pct = 1;
@@ -207,6 +217,8 @@ Disasters.prototype = {
 				}
 				this.main.updateDamCount();
 				this.showResult("Flash Flood", "You lost " + toDestroy + " water dams in the flash flood.");
+				this.flood = this.game.add.audio("rain");
+				this.flood.play();
 				break;
 		}
 	},
@@ -226,10 +238,10 @@ Disasters.prototype = {
 		}
 
 		var disasterTier = 0;
-		if(maxTraitLevel > 1 || this.board.getDamCount() >= 18 || this.main.getBeavers() >= 16) {
+		if(maxTraitLevel > 1 || this.board.getDamCount() >= 12 || this.main.getBeavers() >= 11) {
 			disasterTier = 1;
 		}
-		if(maxTraitLevel === 3 || (this.board.getDamCount() >= 25 && this.main.getBeavers() >= 22))  {
+		if(maxTraitLevel === 3 || (this.board.getDamCount() >= 20 && this.main.getBeavers() >= 18))  {
 			disasterTier = 2;
 		}
 
@@ -241,10 +253,10 @@ Disasters.prototype = {
 		];
 
 		if (disasterTier > 0) {
-			progressiveMap = progressiveMap.concat(["Pollution", "Pollution", "Famine", "Famine"]);
+			progressiveMap = progressiveMap.concat(["Pollution", "Pollution", "Pollution", "Pollution", "Famine", "Famine", "Famine"]);
 		}
 		if (disasterTier === 2) {
-			progressiveMap = progressiveMap.concat(["Poacher", "Tornado"]);
+			progressiveMap = progressiveMap.concat(["Poacher", "Poacher", "Poacher", "Tornado", "Tornado", "Tornado"]);
 		}
 
 		console.log("your disaster tier is: ", disasterTier);

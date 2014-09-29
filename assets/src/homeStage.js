@@ -4,10 +4,10 @@ var HomeStage = function (game) {
 	this.game = game;
 
 	this.instructionText =
-		"Choose to evolve your colony to better withstand disasters over time.\n" + 
-		"Every turn, you will have the option to add more beavers or more dams.\n"+
-		"Be careful of random natural disasters -- they could devastate your colony.\n"+
-		"Evolve your colony of beavers over time to withstand natural disasters!";
+		"Progress and evolve your colony of beavers into a mighty civilization!\n" + 
+		"Every turn, you may populate your colony, build more dam, or give your beavers an enhanced trait.\n"+
+		"Be careful of random natural disasters though -- they could be devastating.\n"+
+		"Sustain and grow your colony to emerge victorious!";
 }
 
 HomeStage.prototype = {
