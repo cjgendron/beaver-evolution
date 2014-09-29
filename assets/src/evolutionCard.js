@@ -89,8 +89,6 @@ var Category = function(name, highestStage, traits) {
                 this.highestStage = 1;
             } else if (this.highestStage === 1) {
                 this.highestStage = 2;
-            } else if (this.highestStage === 2) {
-                this.highestStage = 3;
             }
         },
         devolve: function() {
@@ -184,7 +182,7 @@ var Trait = function(stage, description) {
                     this.button.events.onInputDown.add(evolve, this);
                     this.category.evolve();
                     this.category.traits[this.category.getHighestStage()].unlock();
-                    this.main.getTaskbar().getDisaster();
+                    this.main.getTaskbar().showTurnResult("Evolve", "Yay! You've evolved!");
                     this.evolutionCard.next();
                 }
             }

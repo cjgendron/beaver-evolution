@@ -20,8 +20,7 @@ GameOverWin.prototype = {
         this.add.sprite(0, 0, 'homeBackground');
 
         // Add some instructions
-        this.instructionText = this.add.text(170, 130, "You won!");
-        this.instructionText.fontSize = 110;
+        this.instructionText = this.add.text(170, 130, "You won!", {font: "110px Bubblegum Sans"});
         this.instructionText.fill = "#FFFFFF";
         this.instructionText.wordWrapWidth = 600;
 
