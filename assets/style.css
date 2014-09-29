@@ -1,9 +1,3 @@
-h1, h2, h3 {
-    text-align: center;
-    font-family: Helvetica;
-    color: white;
-}
-
 #game {
     margin: 0px auto;
 }
@@ -14,4 +8,11 @@ canvas {
 
 body {
     background-color: black;
+    font-family: "Open Sans";
+    text-align: center;
+    color: white;
+}
+
+a {
+    color: white;
 }
