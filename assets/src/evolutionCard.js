@@ -25,15 +25,11 @@ EvolutionCard.prototype = {
         return this.card;
     },
     createEvolutionCard: function() {
-        var titleStyle = { font: "20px Arial", fill: "#01579b", align: "center" };
-        var categoryStyle = { font: "30px Arial", fill: "#01579b", align: "center" };
-        var traitStyle = { font: "25px Arial", fill: "#000000", align: "left", wordWrap: true, wordWrapWidth: this.game.width/3 - 50};
-
-        var text = "You can evolve in any of the three categories, but you must evolve traits in order.";
-        this.group.add(new Phaser.Text(this.game, 0, 0, text, titleStyle));
+        var categoryStyle = { font: "36px Bubblegum Sans", fill: "#763303", align: "center" };
+        var traitStyle = { font: "22px Open Sans", fill: "#000000", align: "left", wordWrap: true, wordWrapWidth: this.game.width/3 - 70};
 
         for (i = 0; i < this.card.length; i++) {
-            this.group.add(new Phaser.Text(this.game, this.game.width/3*i, 50, this.card[i].name, categoryStyle));
+            this.group.add(new Phaser.Text(this.game, this.game.width/3*i + 20, 40, this.card[i].name, categoryStyle));
             for (j = 0; j < this.card[i].traits.length; j++) {
                 var trait = this.card[i].traits[j];
                 trait.init(this.game.width/3*i,
@@ -68,7 +64,6 @@ EvolutionCard.prototype = {
         return numTraits;
     },
     show: function() {
-        this.game.stage.backgroundColor = "#ffffff";
         this.group.visible = true;
     },
     hide: function() {
@@ -132,9 +127,9 @@ var Trait = function(stage, description) {
             this.group = group;
             this.category = category;
             this.evolutionCard = evolutionCard
-            text = new Phaser.Text(this.game, 50+x, y, description, traitStyle);
+            text = new Phaser.Text(this.game, 70+x, y, description, traitStyle);
             this.group.add(text);
-            var button = new Phaser.Button(this.game, x, y, this.getTraitImage());
+            var button = new Phaser.Button(this.game, x+20, y, this.getTraitImage());
             button.inputEnabled = true;
             button.events.onInputDown.add(evolve, this);
             this.button = button;
@@ -145,7 +140,7 @@ var Trait = function(stage, description) {
                     if (this.button != null) {
                         this.button.destroy();
                     }
-                    this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate, this.yCoordinate, this.getTraitImage()));
+                    this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate + 20, this.yCoordinate, this.getTraitImage()));
                     this.button.inputEnabled = true;
                     this.button.events.onInputDown.add(evolve, this);
                     this.category.evolve();
@@ -172,7 +167,7 @@ var Trait = function(stage, description) {
             if (this.button != null) {
                 this.button.destroy();
             }
-            this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate, this.yCoordinate, this.getTraitImage()));
+            this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate + 20, this.yCoordinate, this.getTraitImage()));
             this.button.inputEnabled = true;
             this.button.events.onInputDown.add(evolve, this);
             this.category.devolve();

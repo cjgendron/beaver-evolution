@@ -18,7 +18,7 @@ Taskbar.prototype = {
 		this.taskbarBack = this.game.add.image(0,540,'taskbarBack');
 		this.beaverImage = new Phaser.Image(this.game, 50, 545, 'beaverImage');
 		this.beaverImage.scale.setTo(0.1,0.1);
-		var numStyle = {font: "30px Bubblegum Sans", fill: "#ff0000"};
+		var numStyle = {font: "30px Bubblegum Sans", fill: "#763303"};
 		this.beaverCountText = this.game.add.text(90, 550, this.getBeaverCount(), numStyle);
 		this.damImage = this.game.add.image(150, 545, 'dam');
 		this.damImage.scale.setTo(0.2,0.2);
@@ -137,7 +137,7 @@ Taskbar.prototype = {
 				this.main.board.hide();
 				this.main.getDisasterInfo().hide();
 				this.main.evolutionCard.show();
-				this.instructions.setText("Choose a trait you'd like to evolve.");
+				this.instructions.setText("Choose a trait you'd like to evolve. You may evolve in any category, but you must evolve in order.");
 			} 
 			else {
 				this.state = "view";
