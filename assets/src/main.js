@@ -52,7 +52,7 @@ BeaverEvolution.prototype = {
         this.game.load.image("dam_water", "/assets/images/dam_water.png", 42, 48);
         this.game.load.image('checkbox_no', '../assets/images/checkbox_no.png', 40, 40);
         this.game.load.image('checkbox_yes', '../assets/images/checkbox_yes.png', 40, 40);
-        this.game.load.image('disaster_bg', '../assets/images/disaster_bg.png');
+        this.game.load.image('disaster_bg', '../assets/images/paper.png');
 
         this.game.load.audio('tornado',"/assets/sound/tornado.aif");
         this.game.load.audio('fire',"/assets/sound/fire.wav");
