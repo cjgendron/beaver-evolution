@@ -167,9 +167,11 @@ Disasters.prototype = {
 					}
 					if (devolved) break;
 				}
-				this.showResult("Pollution", "You lost this trait: " + traitDescription);
-				this.pollution = this.game.add.audio("pollution");
-				this.pollution.play();
+				if (traitDescription != null){
+					this.showResult("Pollution", "You lost this trait: " + traitDescription);
+					this.pollution = this.game.add.audio("pollution");
+					this.pollution.play();
+				}
 				break;
 			case "Poachers":
 				var random = this.getRandomInt(0, 9);
