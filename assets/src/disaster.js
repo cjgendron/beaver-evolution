@@ -56,9 +56,8 @@ Disasters.prototype = {
 		var disasterKeys = Object.keys(disasters);
 		for (var index = 0; index < disasterKeys.length; index++) {
 			var disaster = disasterKeys[index];
-			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 50, disaster, { fill: "black", font: "24px Bubblegum Sans" }));
-			this.group.add(new Phaser.Text(this.game, 50, (index * 50) + 80, disasters[disaster].description, { fill: "black", font: "16px Open Sans", wordWrap: true, wordWrapWidth: 700 }));
-			index++;
+			this.group.add(new Phaser.Text(this.game, 50, (index * 59) + 30, disaster, { fill: "black", font: "24px Bubblegum Sans" }));
+			this.group.add(new Phaser.Text(this.game, 50, (index * 59) + 50, disasters[disaster].description, { fill: "black", font: "16px Open Sans", wordWrap: true, wordWrapWidth: 700 }));
 		}
 	},
 
@@ -81,8 +80,8 @@ Disasters.prototype = {
 	
 	occurrence: function() {
 		var disaster;
-
-		if (this.getRandomInt(0,1) == 0) {
+		var disasterTier = this.getDisasterTier();
+		if (this.getRandomInt(0,1) == 0 || (disasterTier > 0 && this.getRandomInt(0,2) < 0)) {
 			disaster = "No disaster";
 			// this.showResult("no disaster", "nothing happened");
 			console.log("No disaster");
@@ -156,11 +155,11 @@ Disasters.prototype = {
 			case "Pollution":
 				// iterate through traits, remove the first highest one we see
 				var devolved = false;
-				var trait = null;
+				var traitDescription = null;
 				for (var trait = 2; trait >=0; trait--){
 					for (var category = 0; category <= 2; category++){
 						if (this.main.getEvolutionCard().getTrait(category,trait)) {
-							trait = this.main.getEvolutionCard().getTraitDescription(category, trait);
+							traitDescription = this.main.getEvolutionCard().getTraitDescription(category, trait);
 							this.main.getEvolutionCard().devolveTrait(category,trait);
 							devolved=true;
 							break;
@@ -168,7 +167,7 @@ Disasters.prototype = {
 					}
 					if (devolved) break;
 				}
-				this.showResult("Pollution", "You lost this trait: " + trait);
+				this.showResult("Pollution", "You lost this trait: " + traitDescription);
 				this.pollution = this.game.add.audio("pollution");
 				this.pollution.play();
 				break;
@@ -227,7 +226,7 @@ Disasters.prototype = {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	},
 
-	progressiveMap: function() {
+	getDisasterTier: function(){
 		var maxTraitLevel = 0;
 		var card = this.main.getEvolutionCard().card;
 		for(var i = 0; i < card.length; i++) {
@@ -238,13 +237,18 @@ Disasters.prototype = {
 		}
 
 		var disasterTier = 0;
-		if(maxTraitLevel > 1 || this.board.getDamCount() >= 12 || this.main.getBeavers() >= 11) {
+		if(maxTraitLevel == 1 || this.board.getDamCount() >= 12 || this.main.getBeavers() >= 11) {
 			disasterTier = 1;
 		}
-		if(maxTraitLevel === 3 || (this.board.getDamCount() >= 20 && this.main.getBeavers() >= 18))  {
+		if(maxTraitLevel > 1 || (this.board.getDamCount() >= 20 && this.main.getBeavers() >= 18))  {
 			disasterTier = 2;
 		}
+		return disasterTier;
+	},
 
+	progressiveMap: function() {
+		
+		var disasterTier = this.getDisasterTier();
 		var progressiveMap = [
 			"Lumberjack", "Lumberjack", "Lumberjack", 
 			"Forest Fire", "Forest Fire", "Forest Fire", "Forest Fire",

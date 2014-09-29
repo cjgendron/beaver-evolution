@@ -129,30 +129,27 @@ var Trait = function(stage, description) {
             this.group.add(text);
             var button = new Phaser.Button(this.game, x+20, y, this.getTraitImage());
             button.inputEnabled = true;
-            button.events.onInputDown.add(evolve, this);
+            button.events.onInputDown.add(this.evolveHelper, this);
             this.button = button;
             this.group.add(this.button);
-            function evolve() {
-                if (!this.locked) {
-                    this.evolveTrait();
-                    if (this.button != null) {
-                        this.button.destroy();
-                    }
-                    this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate + 20, this.yCoordinate, this.getTraitImage()));
-                    this.button.inputEnabled = true;
-                    this.button.events.onInputDown.add(evolve, this);
-                    this.category.evolve();
-                    this.category.traits[this.category.getHighestStage()].unlock();
-                    this.main.getTaskbar().showTurnResult("Evolve", "Yay! You've evolved!");
-                    this.evolutionCard.next();
-                }
-            }
         },
         lock: function() {
             this.locked = true;
+            if (this.button != null) {
+                this.button.destroy();
+            }
+            this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate + 20, this.yCoordinate, this.getTraitImage()));
+            this.button.inputEnabled = true;
+            this.button.events.onInputDown.add(this.evolveHelper, this);
         },
         unlock: function() {
             this.locked = false;
+            if (this.button != null) {
+                this.button.destroy();
+            }
+            this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate + 20, this.yCoordinate, this.getTraitImage()));
+            this.button.inputEnabled = true;
+            this.button.events.onInputDown.add(this.evolveHelper, this);
         },
         hasTrait: function() {
             return this.evolved;
@@ -162,33 +159,37 @@ var Trait = function(stage, description) {
         },
         devolveTrait: function() {
             this.evolved = false;
+            this.category.traits[this.category.getHighestStage()].lock();
             if (this.button != null) {
                 this.button.destroy();
             }
             this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate + 20, this.yCoordinate, this.getTraitImage()));
             this.button.inputEnabled = true;
-            this.button.events.onInputDown.add(evolve, this);
+            this.button.events.onInputDown.add(this.evolveHelper, this);
             this.category.devolve();
             this.category.traits[this.category.getHighestStage()].unlock();
             this.evolutionCard.next();
-            function evolve() {
-                if (!this.locked) {
-                    this.evolveTrait();
-                    if (this.button != null) {
-                        this.button.destroy();
-                    }
-                    this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate, this.yCoordinate, this.getTraitImage()));
-                    this.button.inputEnabled = true;
-                    this.button.events.onInputDown.add(evolve, this);
-                    this.category.evolve();
-                    this.category.traits[this.category.getHighestStage()].unlock();
-                    this.main.getTaskbar().showTurnResult("Evolve", "Yay! You've evolved!");
-                    this.evolutionCard.next();
-                }
-            }
+
         },
         getTraitImage: function() {
-            return this.evolved ? 'checkbox_yes' : 'checkbox_no';
+            return this.evolved ? 'checkbox_yes' : (this.locked ? 'checkbox_no_click' : 'checkbox_no');
         },
+
+        evolveHelper : function(){
+            if (!this.locked) {
+                this.lock();
+                this.evolveTrait();
+                if (this.button != null) {
+                    this.button.destroy();
+                }
+                this.button = this.group.add(new Phaser.Button(this.game, this.xCoordinate + 20, this.yCoordinate, this.getTraitImage()));
+                this.button.inputEnabled = true;
+                this.button.events.onInputDown.add(this.evolveHelper, this);
+                this.category.evolve();
+                this.category.traits[this.category.getHighestStage()].unlock();
+                this.main.getTaskbar().showTurnResult("Evolve", "Yay! You've evolved!");
+                this.evolutionCard.next();
+            }
+        }
     }
 }

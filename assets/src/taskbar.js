@@ -16,17 +16,17 @@ Taskbar.prototype = {
 	},
 	createTaskbar: function() {
 		this.taskbarBack = this.game.add.image(0,540,'taskbarBack');
-		this.beaverImage = new Phaser.Image(this.game, 50, 545, 'beaverImage');
+		this.beaverImage = new Phaser.Image(this.game, 160, 545, 'beaverImage');
 		this.beaverImage.scale.setTo(0.1,0.1);
 		var numStyle = {font: "30px Bubblegum Sans", fill: "#763303"};
-		this.beaverCountText = this.game.add.text(90, 550, this.getBeaverCount(), numStyle);
-		this.damImage = this.game.add.image(150, 545, 'dam');
+		this.beaverCountText = this.game.add.text(200, 550, this.getBeaverCount(), numStyle);
+		this.damImage = this.game.add.image(260, 545, 'dam');
 		this.damImage.scale.setTo(0.2,0.2);
-		this.damCountText = this.game.add.text(190, 550, this.damCount, numStyle);
-		this.damCountToBuildText = this.game.add.text(230, 550, null, { fill: "#00ff44"});
-		this.infoButton = this.game.add.button(300, 550, 'infoButton', this.actionOnInfo, this);
+		this.damCountText = this.game.add.text(300, 550, this.damCount, numStyle);
+		this.damCountToBuildText = this.game.add.text(345, 550, null, {font: "30px Bubblegum Sans", fill: "#00ff44"});
+		this.infoButton = this.game.add.button(50, 550, 'infoButton', this.actionOnInfo, this);
 		this.buildButton = this.game.add.button(400, 550, 'buildButton', this.actionOnBuild, this);
-		this.populateButton = this.game.add.button(500, 550, 'populateButton', this.actionOnPopulate, this);
+		this.populateButton = this.game.add.button(505, 550, 'populateButton', this.actionOnPopulate, this);
 		this.evolveButton = this.game.add.button(650, 550, 'evolveButton', this.actionOnEvolve, this);
 		this.group.add(this.beaverImage);
 		this.group.add(this.beaverCountText);
@@ -37,9 +37,21 @@ Taskbar.prototype = {
 		this.group.add(this.populateButton);
 		this.group.add(this.evolveButton);
 		this.group.add(this.taskbarBack);
+
 		this.instructions = new Phaser.Text(this.game, 50, 490, "Let's get started! Choose to build, populate, or evolve.",
 			{ font: "20px Open Sans", fill: "#763303", align: "center", wordWrap: true, wordWrapWidth:700});
+
+		this.graphics = this.game.add.graphics(0, 0);
+
+
+	    // set a fill and line style
+	    this.graphics.beginFill(0xFFFFFF);
+	    this.graphics.lineStyle(2, 0x000000, 1);
+	    this.graphics.moveTo(0,487);
+	    this.graphics.lineTo(800, 487);
 		this.group.add(this.instructions);
+		//this.group.add(this.graphics);
+		//this.group.bringToTop(this.graphics);
 		this.group.sendToBack(this.taskbarBack);
 	},
 	show: function() {
@@ -95,7 +107,7 @@ Taskbar.prototype = {
 				this.damsToBuild = 0;
 				this.setBuildText("");
 				this.state = "view";
-				this.showTurnResult("Build", "All that hard work build dams paid off! You now have " + this.getDamCount() + " dams.");
+				this.showTurnResult("Build", "All that hard work building dams paid off! You now have " + this.getDamCount() + " dams.");
 			}			
 		}
 	},
