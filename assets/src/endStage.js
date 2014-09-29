@@ -20,7 +20,7 @@ EndStage.prototype = {
 		this.add.sprite(0, 0, 'homeBackground');
 
 		// Add some instructions
-		this.instructionText = this.add.text(140, 130, "Game Over");
+		this.instructionText = this.add.text(140, 130, "Game Over", {font: "110px Bubblegum Sans"});
 		this.instructionText.fontSize = 110;
 		this.instructionText.fill = "#FFFFFF";
 		this.instructionText.wordWrapWidth = 600;

@@ -40,6 +40,6 @@ HomeStage.prototype = {
 
 	startGame: function() {
 		// User clicks 'start game' - let's get going
-		this.game.state.start('main');
+		this.game.state.start('instructions');
 	}
 }

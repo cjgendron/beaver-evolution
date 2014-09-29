@@ -143,6 +143,7 @@ var Trait = function(stage, description) {
                     this.button.events.onInputDown.add(evolve, this);
                     this.category.evolve();
                     this.category.traits[this.category.getHighestStage()].unlock();
+                    this.main.getTaskbar().checkEndConditions();
                     this.main.getTaskbar().showTurnResult("Evolve", "Yay! You've evolved!");
                     this.evolutionCard.next();
                 }
@@ -182,6 +183,7 @@ var Trait = function(stage, description) {
                     this.button.events.onInputDown.add(evolve, this);
                     this.category.evolve();
                     this.category.traits[this.category.getHighestStage()].unlock();
+                    this.main.getTaskbar().checkEndConditions();
                     this.main.getTaskbar().showTurnResult("Evolve", "Yay! You've evolved!");
                     this.evolutionCard.next();
                 }
