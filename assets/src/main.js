@@ -55,12 +55,14 @@ BeaverEvolution.prototype = {
         this.game.load.image('checkbox_yes', '../assets/images/checkbox_yes.png', 40, 40);
         this.game.load.image('disaster_bg', '../assets/images/paper.png');
 
-        this.game.load.audio('tornado',"/assets/sound/tornado.aif");
+        this.game.load.audio('tornado',"/assets/sound/tornado.wav");
         this.game.load.audio('fire',"/assets/sound/fire.wav");
         this.game.load.audio('rain',"/assets/sound/rain.wav");
         this.game.load.audio('lumberjack',"/assets/sound/lumberjack.wav");
         this.game.load.audio('pollution',"/assets/sound/pollution.wav");
         this.game.load.audio('poacher',"/assets/sound/poacher.wav");
+        this.game.load.audio('click',"/assets/sound/buttonclick.wav");
+        this.game.load.audio('building',"/assets/sound/building.wav");
     },
     create: function() {
         this.game.stage.backgroundColor = "#ffffff";

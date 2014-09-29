@@ -40,6 +40,8 @@ Board.prototype = {
 	},
 	placeDam : function(piece){
 		if(this.dams.indexOf(piece) == -1) {
+			this.building = this.game.add.audio("building");
+			this.building.play();			
 			piece.placeDam();
 			this.dams.push(piece);
 		}
@@ -56,6 +58,8 @@ Board.prototype = {
 	removeDam : function(piece){
 		this.dams.splice(this.dams.indexOf(piece), 1);
 		piece.removeDam();
+		this.building = this.game.add.audio("building");
+		this.building.play();
 		//lock the adjacent pieces now for placing dams
 		var neighbors = piece.getNeighbors();
 		for (neighbor in neighbors){

@@ -28,6 +28,7 @@ Taskbar.prototype = {
 		this.buildButton = this.game.add.button(400, 550, 'buildButton', this.actionOnBuild, this);
 		this.populateButton = this.game.add.button(505, 550, 'populateButton', this.actionOnPopulate, this);
 		this.evolveButton = this.game.add.button(650, 550, 'evolveButton', this.actionOnEvolve, this);
+		this.click = this.game.add.audio("click");
 		this.group.add(this.beaverImage);
 		this.group.add(this.beaverCountText);
 		this.group.add(this.damImage);
@@ -61,6 +62,7 @@ Taskbar.prototype = {
 		this.group.visible = false;
 	},
 	actionOnInfo : function(clickedButton){
+		this.click.play();
 		if (!this.locked) {
 			if (this.state == "building"){
 				this.clearBuildingState();
@@ -81,6 +83,7 @@ Taskbar.prototype = {
 	},
 	actionOnBuild : function(clickedButton){
 		// TODO: need to add a screen to tell them how many they can build, different art for dams that havent been locked in yet
+		this.click.play();
 		if (!this.locked) {
 			this.main.getBoard().show();
 			this.main.getEvolutionCard().hide();
@@ -112,6 +115,7 @@ Taskbar.prototype = {
 		}
 	},
 	actionOnPopulate : function(clickedButton){
+		this.click.play();
 		if (!this.locked) {
 			if (this.state == "building"){
 				this.clearBuildingState();
@@ -140,6 +144,7 @@ Taskbar.prototype = {
 	},
 
 	actionOnEvolve : function(){
+		this.click.play();
 		if (!this.locked) {
 			if (this.state == "building"){
 				this.clearBuildingState();

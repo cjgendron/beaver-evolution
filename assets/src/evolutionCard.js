@@ -10,7 +10,7 @@ var EvolutionCard = function(main, group) {
     var trait12 = new Trait(2, "Only 25% loss on drought");
     var trait20 = new Trait(0, "Only 50% loss on flood");
     var trait21 = new Trait(1, "Can increase population by 50% when populating");
-    var trait22 = new Trait(2, "Only 50% dam loss on fire");
+    var trait22 = new Trait(2, "Only 50% loss on fire");
     this.card = [
         Category("Craftsmanship", 0, [trait00, trait01, trait02]),
         Category("Resolve", 0, [trait10, trait11, trait12]),
